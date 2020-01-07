@@ -5,12 +5,14 @@ import { decode } from 'jsonwebtoken'
 import style from './style'
 import Sidebar from '../../view/Sidebar'
 import { Spinner } from '../../component'
+import { Submit } from './popup'
 
 const GETWORKME = gql`
     query getWorkme($id: ID!){
         workme(id: $id){
             w_id
             w_title
+            w_detail
             m_firstname
             m_lastname
             w_deadline
@@ -25,15 +27,20 @@ const Workme = ({ classes }) => {
             id: decode(localStorage.getItem("nodeToken"))[0].m_id
         }
     })
+
+    const [submit, setSubmit] = useState(false)
     const [Workme, setWorkme] = useState([])
+    const [select, setSelect] = useState({})
 
     useEffect(() => {
-        if(data !== undefined) setWorkme(data.workme);
+        if (data !== undefined) setWorkme(data.workme);
     }, [data])
 
     return (
         <>
             {loading && <Spinner />}
+            {submit && <Submit classes={classes} close={e=>{setSubmit(false); setSelect({})}} data={select} />}
+
             <div className={classes.container}>
                 <Sidebar />
                 <div className={classes.content}>
@@ -64,7 +71,10 @@ const Workme = ({ classes }) => {
                                             <button>เปิด</button>
                                         </td>
                                         <td>
-                                            <button>ส่งงาน</button>
+                                            <button onClick={e => {
+                                                setSubmit(true);
+                                                setSelect(n)
+                                            }} >ส่งงาน</button>
                                         </td>
                                     </tr>
                                 ))}

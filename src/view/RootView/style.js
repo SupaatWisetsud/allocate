@@ -6,6 +6,7 @@ const style = {
             margin: 0,
             fontFamily: "tahoma",
             padding: 0,
+            boxSizing: "border-box"
         },
         body: {
             backgroundColor: '#EFEFEF',

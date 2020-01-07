@@ -1,6 +1,8 @@
 import mysql from 'mysql'
 import md5 from 'md5'
 import jwt from 'jsonwebtoken'
+import { createWriteStream } from 'fs'
+import path from 'path'
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -57,7 +59,7 @@ const resolvers = {
         workme: async (parent, args, context, info) => {
             let sql = `SELECT * FROM tb_work 
                     INNER JOIN tb_member ON tb_work.w_commander = tb_member.m_id
-                    WHERE tb_work.w_worker = '${args.id}' AND w_status = 'send' `
+                    WHERE tb_work.w_worker = '${args.id}' AND w_status = 'proceed' `
             let result = [];
             await new Promise((resolve, reject) => {
                 db.query(sql, (err, row) => {
@@ -103,7 +105,21 @@ const resolvers = {
             });
             
             return result
-        }
+        },
+        uploadfile: async (parent,  { file }, context, info) => {
+            
+            for (let n in file) {
+                const { createReadStream, filename } = await file[n];
+                await new Promise(res => 
+                    createReadStream()
+                        .pipe(createWriteStream(path.join(__dirname, "../upload", filename)))
+                        .on("close", res)
+                )
+            }
+
+            // console.log(file);
+            return true;
+        } 
     }
 }
 export default resolvers

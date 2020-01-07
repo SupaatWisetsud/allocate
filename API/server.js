@@ -1,9 +1,13 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import cors from 'cors'
+import { existsSync, mkdirSync } from 'fs'
 import { typeDefs, resolvers, context } from './schema'
 
 const app = express();
+
+existsSync(`${__dirname}/img/user`) || mkdirSync(`${__dirname}/img/user`);
+existsSync(`${__dirname}/upload`) || mkdirSync(`${__dirname}/upload`);
 
 app.use(cors());
 app.use(express.json());

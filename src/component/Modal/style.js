@@ -15,7 +15,6 @@ const style = {
     },
     modal : {
         position : 'relative',
-        backgroundColor : "white",
         padding : 10,
         borderRadius : 5,
         maxWidth : 550,

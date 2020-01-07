@@ -12,6 +12,7 @@ type Query {
 
 type Mutation {
     login(username: String!, password: String!): Login!
+    uploadfile(file: Upload!): Boolean
 }
 
 type Login{
