@@ -16,14 +16,14 @@ class Editprofile extends React.Component {
     async UNSAFE_componentWillMount() {
         if (localStorage.getItem("nodeToken")) {
 
-            const { m_username, m_firstname, m_lastname, m_email, m_numberphone } = decode(localStorage.getItem("nodeToken"))[0];
+            const { username, firstname, lastname, email, phone } = decode(localStorage.getItem("nodeToken"))._doc;
 
             await this.setState({
-                username: m_username,
-                fname: m_firstname,
-                lname: m_lastname,
-                email: m_email,
-                phone: m_numberphone
+                username: username,
+                fname: firstname,
+                lname: lastname,
+                email: email,
+                phone: phone
             });
         }
     }

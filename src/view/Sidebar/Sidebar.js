@@ -12,7 +12,7 @@ const Sidebar = ({ classes }) => {
     useEffect(() => {
         const decodeUser = () => {
             if(localStorage.getItem("nodeToken") !== null){
-                setUser(decode(localStorage.getItem("nodeToken"))[0]);
+                setUser(decode(localStorage.getItem("nodeToken"))._doc);   
             }
         }
         decodeUser();
@@ -25,14 +25,14 @@ const Sidebar = ({ classes }) => {
                 Allocate
             </div>
             <div className={classes.profile} >
-                <img src={"logo192.png"} alt={user.m_id} />
-                <p>Status : {user.m_status}</p>
-                <p> {user.m_firstname} {user.m_lastname} </p>
+                <img src={"logo192.png"} alt={user._id} />
+                <p>Status : {user.status}</p>
+                <p> {user.firstname} {user.lastname} </p>
             </div>
             <nav>
                 <ul>
                     {route.map((n, index) => (
-                        (n.display && (n.status === "all" || user.m_status === n.status)) &&
+                        (n.display && (n.status === "all" || user.status === n.status)) &&
                         <NavLink key={index} to={n.path} exact activeStyle={{ textShadow: "1px 2px 3px rgba(0,0,0,0.3)" }} >
                             <li>
                                 {n.title}

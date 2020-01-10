@@ -28,11 +28,11 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                         </thead>
                         <tbody>
                             {work.map(n => (
-                                <tr key={n.w_id}>
-                                    <td>{n.w_id}</td>
-                                    <td>{n.w_title}</td>
-                                    <td>{n.m_firstname} {n.m_lastname}</td>
-                                    <td>{n.w_deadline}</td>
+                                <tr key={n._id}>
+                                    <td>{n._id}</td>
+                                    <td>{n.title}</td>
+                                    <td>{n.commander.firstname} {n.commander.lastname}</td>
+                                    <td>{n.deadline}</td>
                                     <td>รอรับ</td>
                                     <td>
                                         <button onClick={e => { setDetail(n); setTogle(false) }} >เปิด</button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import style from './style'
@@ -9,28 +9,27 @@ import { Spinner } from '../../component'
 const NEW_FEED = gql`
     {
         newfeeds {
-            w_id
-            m_firstname
-            m_lastname
-            w_status
-            w_title
-            w_detail
-            w_datestatus
+            title
+            detail
+            status
+            datestatus
+            worker {
+                firstname
+                lastname
+            }
         }
     }
 `;
-// bug อยู่เน้อ
+
 const Dashboard = ({ classes }) => {
 
     const [newfeed, setNewfeed] = useState([]);
 
-    const { data, loading } = useQuery(NEW_FEED);
-
-    useEffect(()=>{
-        if(data !== undefined){
+    const { loading } = useQuery(NEW_FEED, {
+        onCompleted: data => {
             setNewfeed(data.newfeeds)
         }
-    }, [data]);
+    });
     
     return (
         <>

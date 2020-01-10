@@ -1,53 +1,58 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { decode } from 'jsonwebtoken'
 import style from './style'
 import Sidebar from '../../view/Sidebar'
 import { Spinner } from '../../component'
-import { Submit } from './popup'
+import { Submit, Newwork } from './popup'
 
 const GETWORKME = gql`
-    query getWorkme($id: ID!){
-        workme(id: $id){
-            w_id
-            w_title
-            w_detail
-            m_firstname
-            m_lastname
-            w_deadline
+    query getWorkme($id: ID!, $status: String!){
+        workme(id: $id, status: $status){
+            _id
+            title
+            detail
+            deadline
+            status
+            commander {
+                firstname
+                lastname
+            }
         }
     }
 `
 
 const Workme = ({ classes }) => {
-
-    const { data, loading } = useQuery(GETWORKME, {
+    
+    const { loading, refetch } = useQuery(GETWORKME, {
         variables: {
-            id: decode(localStorage.getItem("nodeToken"))[0].m_id
-        }
-    })
-
+            id: decode(localStorage.getItem("nodeToken"))._doc._id,
+            status: "proceed"
+        },
+        onCompleted: data => {
+            setWorkme(data.workme);
+        },
+    });
+    
     const [submit, setSubmit] = useState(false)
-    const [Workme, setWorkme] = useState([])
+    const [workme, setWorkme] = useState([])
     const [select, setSelect] = useState({})
-
-    useEffect(() => {
-        if (data !== undefined) setWorkme(data.workme);
-    }, [data])
+    const [newwork, setNewwork] = useState(false)
 
     return (
         <>
             {loading && <Spinner />}
             {submit && <Submit classes={classes} close={e=>{setSubmit(false); setSelect({})}} data={select} />}
-
+            {newwork && <Newwork close={e=>setNewwork(false)} />}
             <div className={classes.container}>
                 <Sidebar />
                 <div className={classes.content}>
+                    <button onClick={e => refetch()}>Refetch</button>
                     <div className={classes.wrapper}>
                         <header className={classes.title}>
                             <span>งานที่กำลังดำเนินการ</span>
-                            <button>งานใหม่</button>
+                            <button onClick={e=>setNewwork(true)} >งานใหม่</button>
                         </header>
                         <table>
                             <thead>
@@ -61,12 +66,12 @@ const Workme = ({ classes }) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Workme.map(n => (
-                                    <tr key={n.w_id} >
-                                        <td> {n.w_id} </td>
-                                        <td>{n.w_title}</td>
-                                        <td>{n.m_firstname} {n.m_lastname}</td>
-                                        <td> {n.w_deadline} </td>
+                                {workme.map((n, i) => (
+                                    <tr key={n._id} >
+                                        <td> {i+1} </td>
+                                        <td>{n.title}</td>
+                                        <td>{n.commander.firstname} {n.commander.lastname}</td>
+                                        <td> {n.deadline} </td>
                                         <td>
                                             <button>เปิด</button>
                                         </td>

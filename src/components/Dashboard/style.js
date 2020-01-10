@@ -7,7 +7,9 @@ const style = theme => ({
     },
     content: {
         flex: 1,
-        padding: 10
+        padding: 10,
+        height: "100vh",
+        overflow: "auto"
     },
     wrapperPost: {
         maxWidth: 650,

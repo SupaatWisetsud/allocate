@@ -2,17 +2,37 @@ import { gql } from 'apollo-server-express'
 
 const typeDefs = gql`
 
+scalar Date
+
 type Query {
-    newfeeds: [Post]
+    newfeeds: [Post]!
     users: [User]
     report: [Report]
-    workme(id: ID!): [Work]
+    workme(id: ID!, status: String!): [Work]
     workorder(id: ID!): [Work]
 }
 
 type Mutation {
     login(username: String!, password: String!): Login!
-    uploadfile(file: Upload!): Boolean
+    uploadfile(file: Upload!, id: ID!): Boolean!
+    register(
+        username: String!, 
+        password: String!, 
+        firstname: String!,
+        lastname: String!,
+        email: String!,
+        img: Upload,
+        phone: String!,
+        status: String!
+    ): Boolean!
+    addwork(
+        title: String!, 
+        detail: String, 
+        deadline: String,
+        worker: String!,
+        commander: String!
+    ): Boolean!
+    workme(id: ID!, status: String!): Boolean!
 }
 
 type Login{
@@ -21,77 +41,52 @@ type Login{
 }
 
 type Work {
-    w_id: String,
-    w_title: String,
-    w_detail: String,
-    w_worker: String,
-    w_commander: String,
-    w_deadline: String,
-    w_datestatus: String,
-    w_datesubmit: String,
-    w_status: String,
-    w_path: String,
-    m_id: String,
-    m_username: String,
-    m_firstname: String,
-    m_lastname: String,
-    m_email: String,
-    m_img: String,
-    m_numberphone: String,
-    m_status: String
+    _id: String,
+    title: String,
+    detail: String,
+    worker: User,
+    commander: User,
+    deadline: Date,
+    datestatus: Date,
+    datesubmit: Date,
+    status: String,
+    path: String,
 }
 
 type User {
-    m_id: String
-    m_username: String,
-    m_firstname: String,
-    m_lastname: String,
-    m_email: String,
-    m_img: String,
-    m_numberphone: String,
-    m_status: String
+    _id: String
+    username: String,
+    firstname: String,
+    lastname: String,
+    email: String,
+    img: String,
+    phone: String,
+    status: String
 }
 type Post {
-    w_id: String
-    w_title: String
-    w_detail: String,
-    w_worker: String,
-    w_commander: String,
-    w_deadline: String,
-    w_datestatus: String,
-    w_datesubmit: String,
-    w_status: String,
-    w_path: String,
-    m_id: String,
-    m_username: String,
-    m_firstname: String,
-    m_lastname: String,
-    m_email: String,
-    m_img: String,
-    m_numberphone: String,
-    m_status: String
+    _id: String
+    title: String
+    detail: String,
+    worker: User,
+    commander: User,
+    deadline: Date,
+    datestatus: Date,
+    datesubmit: Date,
+    status: String,
+    path: String,
 }
 
 type Report {
-    w_id: String,
-    w_title: String,
-    w_detail: String,
-    w_worker: String,
-    w_commander: String,
-    w_deadline: String,
-    w_datestatus: String,
-    w_datesubmit: String,
-    w_status: String,
-    w_path: String,
-    m_id: String,
-    m_username: String,
-    m_password: String,
-    m_firstname: String,
-    m_lastname: String,
-    m_email: String,
-    m_img: String,
-    m_numberphone: String,
-    m_status: String
+    _id: String,
+    title: String,
+    detail: String,
+    worker: User,
+    commander: User,
+    deadline: String,
+    datestatus: String,
+    datesubmit: String,
+    status: String,
+    path: [String],
 }
 
 `;

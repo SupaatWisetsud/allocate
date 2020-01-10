@@ -1,18 +1,24 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { Modal } from '../../../component'
 
 const UPLOADFILE = gql`
-    mutation uploadFile($file: Upload!){
-        uploadfile(file: $file)
+    mutation uploadFile($file: Upload!, $id: ID!){
+        uploadfile(file: $file, id: $id)
     }
+    
 `
+
 export const Submit = ({ classes, close, data }) => {
     let upload, detailFile, file;
 
     const [uploadFileTodo, { loading }] = useMutation(UPLOADFILE);
 
+    useEffect(()=>{
+
+    }, [])
+    
     if (loading) {
         return (
             <Modal>
@@ -29,13 +35,13 @@ export const Submit = ({ classes, close, data }) => {
             <div className={classes.sContent}>
                 <div>
                     <div>
-                        <p>หัวข้อ : {data.w_title} </p>
+                        <p>หัวข้อ : {data.title} </p>
                     </div>
                     <div>
-                        <p>สั่งโดย : {data.m_firstname} {data.m_lastname} </p>
+                        <p>สั่งโดย : {data.commander.firstname} {data.commander.lastname} </p>
                     </div>
                     <div>
-                        <p>รายละเอียด : {data.w_detail} </p>
+                        <p>รายละเอียด : {data.detail} </p>
                     </div>
                 </div>
                 <div>
@@ -71,10 +77,11 @@ export const Submit = ({ classes, close, data }) => {
             </div>
             <div className={classes.sSubmit} >
                 <button className={null} onClick={async e => {
-                    await uploadFileTodo({ variables: { file } })
-                        .then(res => {
-                            close();
-                        })
+                    if (file !== undefined) {
+                        await uploadFileTodo({ variables: { file, id: data._id } }).then(res => console.log("STEP 1"))
+                        
+                        close();
+                    }
                 }} >ส่ง</button>
                 <button onClick={close} >ยกเลิก</button>
             </div>

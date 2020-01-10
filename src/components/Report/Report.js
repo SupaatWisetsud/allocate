@@ -13,28 +13,37 @@ const GQL_Query = gql`
     query getData($id: ID!) {
 
         workorder(id: $id) {
-            w_id
-            w_title
-            m_firstname
-            m_lastname
-            w_deadline
+            _id
+            title
+            deadline
+            commander {
+                firstname
+                lastname
+            }
         }
         report {
-            w_id
-            w_title
-            m_firstname
-            m_lastname
-            w_deadline
-            w_path
+            _id
+            title
+            deadline
+            path
+            worker {
+                firstname
+                lastname
+            }
         }
     }
 `
 
 const Report = ({ classes }) => {
 
-    const {data, loading} = useQuery(GQL_Query, {
+    const {loading} = useQuery(GQL_Query, {
         variables: {
-            id: decode(localStorage.getItem("nodeToken"))[0].m_id
+            id: decode(localStorage.getItem("nodeToken"))._doc._id
+        },
+        onCompleted: data => {
+            setReport(data.report);
+            setWork(data.workorder)
+            
         }
     });
 
@@ -42,16 +51,10 @@ const Report = ({ classes }) => {
     const [user, setUser] = useState(false);
     const [isOpen, setIsOpen] = useState(false)
     const [work, setWork] = useState([])
-
+    
     useEffect(() => {
-
-        setUser(decode(localStorage.getItem("nodeToken"))[0]);
-        
-        if (data !== undefined) {
-            setWork(data.workorder);
-            setReport(data.report);
-        }
-    }, [data]);
+        setUser(decode(localStorage.getItem("nodeToken"))._doc);
+    }, []);
 
     const downloadFile = (filename) => {
         axios({
@@ -77,7 +80,7 @@ const Report = ({ classes }) => {
                     <div className={classes.wrapper}>
                         <header className={classes.title}>
                             <span>งานทั้งหมด</span>
-                            {user.m_status === "admin" && <button onClick={e => setIsOpen(true)}>งานที่สั่ง</button>}
+                            {user.status === "admin" && <button onClick={e => setIsOpen(true)}>งานที่สั่ง</button>}
                         </header>
                         <table>
                             <thead>
@@ -92,16 +95,16 @@ const Report = ({ classes }) => {
                             </thead>
                             <tbody>
                                 {report.map(n => (
-                                    <tr key={n.w_id} >
-                                        <td> {n.w_id} </td>
-                                        <td>{n.w_title}</td>
-                                        <td>{n.m_firstname} {n.m_lastname}</td>
-                                        <td> {n.w_deadline === null ? "ไม่มีกำหนด" : n.w_deadline} </td>
+                                    <tr key={n._id} >
+                                        <td> {n._id} </td>
+                                        <td>{n.title}</td>
+                                        <td>{n.worker.firstname} {n.worker.lastname}</td>
+                                        <td> {n.deadline === null ? "ไม่มีกำหนด" : n.w_deadline} </td>
                                         <td>
                                             <button >เปิด</button>
                                         </td>
                                         <td>
-                                            <button onClick={e => downloadFile(n.w_path)} > {n.w_path}</button>
+                                            {/* <button onClick={e => downloadFile(n.w_path)} > {n.path}</button> */}
                                         </td>
                                     </tr>
                                 ))}

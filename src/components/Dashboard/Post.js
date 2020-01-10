@@ -3,15 +3,15 @@ import React from 'react'
 export default ({ classes, data }) => (
     <div className={classes.post}>
         <div className={classes.postHeader}>
-            <p>คุณ : {data.m_firstname} {data.m_lastname} </p>
-            <p>สถานะ : {data.w_status === "proceed"? "รับงาน":"ส่งงาน"} </p>
+            <p>คุณ : {data.worker.firstname} {data.worker.lastname} </p>
+            <p>สถานะ : {data.status === "proceed"? "รับงาน":"ส่งงาน"} </p>
         </div>
         <div className={classes.postBody}>
-            <p>เรื่อง : {data.w_title} </p>
-            <p>รายละเอียด : {data.w_detail === ""? "ไม่มี":data.w_detail} </p>
+            <p>เรื่อง : {data.title} </p>
+            <p>รายละเอียด : {data.detail === ""? "ไม่มี":data.detail} </p>
         </div>
         <div className={classes.postFooter}>
-            <p> {data.w_datestatus} </p>
+            <p> {data.datestatus} </p>
         </div>
     </div>
 )
