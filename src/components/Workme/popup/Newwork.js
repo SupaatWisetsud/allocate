@@ -1,42 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { graphql } from 'react-apollo'
 import { decode } from 'jsonwebtoken'
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost'
 import { Modal } from '../../../component'
-
-const NEWWORK = gql`
-    query getWorkme($id: ID!, $status: String!){
-        workme(id: $id, status: $status){
-            _id
-            title
-            detail
-            deadline
-            status
-            commander {
-                firstname
-                lastname
-            }
-        }
-    }
-`;
 
 const UPDATE_WORK = gql`
     mutation updateStatuework($id: ID!, $status: String!){
         workme(id: $id, status: $status)
     }
 `
-export const Newwork = ({close}) => {
-    useQuery(NEWWORK, {
-        variables: {
-            id: decode(localStorage.getItem("nodeToken"))._doc._id,
-            status: "send"
-        },
-        onCompleted: data => setNewwork(data.workme)
-    });
-
+const Newwork = ({close, workme}) => {
+    
     const [updateWork] = useMutation(UPDATE_WORK);
 
     const [newWork, setNewwork] = useState([]);
+    useEffect(()=>{
+        if(workme) setNewwork(workme)
+    }, [workme])
     return (
         <Modal isOpen={true} >
             <header >
@@ -70,7 +51,8 @@ export const Newwork = ({close}) => {
                                         variables: {
                                             id: n._id,
                                             status: "proceed"
-                                        }
+                                        },
+                                        refetchQueries: ["getWorkme"]
                                     })
                                 }} >รับ</button>
                             </td>
@@ -81,3 +63,29 @@ export const Newwork = ({close}) => {
         </Modal>
     )
 }
+
+const NEWWORK = gql`
+    query getWorkme($id: ID!, $status: String!){
+        workme(id: $id, status: $status){
+            _id
+            title
+            detail
+            deadline
+            status
+            commander {
+                firstname
+                lastname
+            }
+        }
+    }
+`;
+
+export default graphql(NEWWORK, {
+    options: {
+        variables: {
+            id: decode(localStorage.getItem("nodeToken"))._doc._id,
+            status: "send"
+        },
+    },
+    props: ({ data }) => ({ ...data })
+})(Newwork);

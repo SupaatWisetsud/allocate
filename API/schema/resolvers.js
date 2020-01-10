@@ -20,7 +20,7 @@ const resolvers = {
         },
         users: async () => await userModel.find({status: "user"}, "-password").exec(),
         report: async () => await workModel.find({status: "success"}).populate("worker").exec(),
-        workme: async (parent, {id, status}) =>await workModel.find({worker: id, status}).populate('commander').populate('worker').exec(),
+        workme: async (parent, {id, status}) => await workModel.find({worker: id, status}).populate('commander').populate('worker').exec(),
         workorder: async (parent, {id}, context, info) => await workModel.find({commander : id}).populate("commander").exec()
     },
     Mutation: {

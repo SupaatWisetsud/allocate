@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { Modal } from '../../../component'
@@ -14,10 +14,6 @@ export const Submit = ({ classes, close, data }) => {
     let upload, detailFile, file;
 
     const [uploadFileTodo, { loading }] = useMutation(UPLOADFILE);
-
-    useEffect(()=>{
-
-    }, [])
     
     if (loading) {
         return (
@@ -78,8 +74,12 @@ export const Submit = ({ classes, close, data }) => {
             <div className={classes.sSubmit} >
                 <button className={null} onClick={async e => {
                     if (file !== undefined) {
-                        await uploadFileTodo({ variables: { file, id: data._id } }).then(res => console.log("STEP 1"))
-                        
+                        await uploadFileTodo({ 
+                                variables: { file, id: data._id },
+                                refetchQueries: ["getWorkme"] 
+                            }
+                        )
+
                         close();
                     }
                 }} >ส่ง</button>

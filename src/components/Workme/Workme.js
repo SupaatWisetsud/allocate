@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import React, { useState, useEffect } from 'react'
+import { graphql } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { decode } from 'jsonwebtoken'
 import style from './style'
@@ -23,22 +23,18 @@ const GETWORKME = gql`
     }
 `
 
-const Workme = ({ classes }) => {
-    
-    const { loading, refetch } = useQuery(GETWORKME, {
-        variables: {
-            id: decode(localStorage.getItem("nodeToken"))._doc._id,
-            status: "proceed"
-        },
-        onCompleted: data => {
-            setWorkme(data.workme);
-        },
-    });
+const Workme = ({classes, workme: dataworkme, loading}) => {
     
     const [submit, setSubmit] = useState(false)
     const [workme, setWorkme] = useState([])
     const [select, setSelect] = useState({})
     const [newwork, setNewwork] = useState(false)
+
+    useEffect(()=>{
+        if(dataworkme){
+            setWorkme(dataworkme)
+        }
+    }, [dataworkme])
 
     return (
         <>
@@ -48,7 +44,6 @@ const Workme = ({ classes }) => {
             <div className={classes.container}>
                 <Sidebar />
                 <div className={classes.content}>
-                    <button onClick={e => refetch()}>Refetch</button>
                     <div className={classes.wrapper}>
                         <header className={classes.title}>
                             <span>งานที่กำลังดำเนินการ</span>
@@ -93,4 +88,13 @@ const Workme = ({ classes }) => {
 }
 
 
-export default style(Workme)
+export default graphql(GETWORKME, {
+    options: {
+        variables : {
+            id: decode(localStorage.getItem("nodeToken"))._doc._id,
+            status: "proceed"        
+        },
+        onCompleted: data => console.log(data)
+    },
+    props: ({ data }) => ({ ...data })
+})(style(Workme))
