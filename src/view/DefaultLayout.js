@@ -3,8 +3,10 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import routes from './router'
 import Sidebar from './Sidebar';
 
-const DefaultLayout = ({ classes, history }) => {
-
+const DefaultLayout = props => {
+    
+    const { classes } = props;
+    
     if (!localStorage.getItem('nodeToken')) {
         return <Redirect to="/login" />
     } else {
@@ -23,7 +25,7 @@ const DefaultLayout = ({ classes, history }) => {
                                     component={route.component} />
                             ) : (null);
                         })}
-                        {/* <Route path="/" component={() => } /> */}
+                        <Route path="/" component={() => <Redirect to="/dashboard" />} />
                     </Switch>
                 </div>
             </div>

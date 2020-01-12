@@ -47,20 +47,21 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/uploadfile", async (req, res) => {
 
+    const { id } = req.body;
+    const { file } = req.files;
+
     const work = await workModel.findById(id).exec();
 
-    // for (let n in file) {
-    //     const { createReadStream, filename } = await file[n];
-    //     work.path.push(filename);
-    //     await new Promise(res =>
-    //         createReadStream()
-    //             .pipe(createWriteStream(path.join(__dirname, "../upload", filename)))
-    //             .on("close", res)
-    //     )
-    // }
+    for (let n in file) {
+        const { mv, name } = await file[n];
+        work.path.push(name);
+        mv(`./API/upload/${name}`, err => {
+            if(err) throw err;
+        })
+    }
 
-    // work.status = "success";
-    // await work.save();
+    work.status = "success";
+    await work.save();
 
     res.json({ status: true })
 });
@@ -70,11 +71,11 @@ app.post("/api/addwork", async (req, res) => {
 })
 
 app.post('/api/workme', async (req, res) => {
-    const {id, status} = req.body; 
+    const { id, status } = req.body;
     const work = await workModel.findById(id).exec();
     work.status = status;
     await work.save();
-    res.json({status: true})
+    res.json({ status: true })
 });
 
 app.get("/api/newfeeds", async (req, res) => {

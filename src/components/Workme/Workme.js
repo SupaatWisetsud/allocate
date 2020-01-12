@@ -30,7 +30,7 @@ const Workme = ({ classes }) => {
     return (
         <>
             {loading && <Spinner />}
-            {submit && <Submit classes={classes} close={e => { setSubmit(false); setSelect({}) }} data={select} />}
+            {submit && <Submit classes={classes} close={e => { setSubmit(false); setSelect({}) }} data={select} setWorkme={setWorkme} />}
             {newwork && <Newwork close={e => setNewwork(false)} data={workme} setWorkme={setWorkme} />}
             <div className={classes.wrapper}>
                 <header className={classes.title}>
