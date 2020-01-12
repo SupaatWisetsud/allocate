@@ -6,7 +6,7 @@ import {
     Logout,
     Report,
     Workme
-} from '../../components'
+} from '../components'
 
 const router = [
     {

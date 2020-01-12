@@ -3,48 +3,8 @@ import ReactDOM from 'react-dom';
 import RootView from './view/RootView';
 import * as serviceWorker from './serviceWorker';
 
-import { ApolloProvider } from '@apollo/react-hooks';
-import { ApolloClient, InMemoryCache } from 'apollo-boost';
-import { createUploadLink } from "apollo-upload-client";
-import { setContext } from 'apollo-link-context';
 
-const authLink = setContext((_, { headers }) => {
-    // get the authentication token from local storage if it exists
-    const token = localStorage.getItem('nodeToken');
-    // return the headers to the context so httpLink can read them
-    return {
-        headers: {
-            ...headers,
-            authorization: token ? token: "",
-        }
-    }
-});
-
-const httpLink = createUploadLink({ uri: "http://localhost:4000/graphql" });
-
-const client = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
-    resolvers: {
-        Mutation: {
-            setCount: (parent, { count }, { cache }, info) => {
-                cache.writeData({
-                    data: {
-                        count
-                    }
-                });
-
-                return null;
-            },
-        }
-    }
-});
-
-ReactDOM.render(
-    <ApolloProvider client={client}>
-        <RootView />
-    </ApolloProvider>
-    , document.getElementById('root'));
+ReactDOM.render(<RootView />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

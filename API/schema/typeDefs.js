@@ -8,7 +8,7 @@ type Query {
     newfeeds: [Post]!
     users: [User]
     report: [Report]
-    workme(id: ID!, status: String!): [Work]
+    workme(id: ID!): [Work]
     workorder(id: ID!): [Work]
 }
 

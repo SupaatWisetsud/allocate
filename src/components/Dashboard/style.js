@@ -1,16 +1,6 @@
 import jss from 'react-jss'
 
 const style = theme => ({
-    container: {
-        display: "flex",
-        flexDicection: "column",
-    },
-    content: {
-        flex: 1,
-        padding: 10,
-        height: "100vh",
-        overflow: "auto"
-    },
     wrapperPost: {
         maxWidth: 650,
         margin: "0 auto"

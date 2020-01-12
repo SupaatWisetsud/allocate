@@ -35,6 +35,16 @@ const style = {
             outline: "none"
         }
     },
+    container: {
+        display: "flex",
+        flexDicection: "column",
+    },
+    content: {
+        flex: 1,
+        padding: 10,
+        height: "100vh",
+        overflow: "auto"
+    },
 }
 
 export default c => jss(style)(c)

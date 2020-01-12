@@ -1,27 +1,10 @@
 import React from 'react'
-import { useMutation } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
 import { Modal } from '../../../component'
 
-const UPLOADFILE = gql`
-    mutation uploadFile($file: Upload!, $id: ID!){
-        uploadfile(file: $file, id: $id)
-    }
-    
-`
 
 export const Submit = ({ classes, close, data }) => {
-    let upload, detailFile, file;
 
-    const [uploadFileTodo, { loading }] = useMutation(UPLOADFILE);
-    
-    if (loading) {
-        return (
-            <Modal>
-                <p>Loading...</p>
-            </Modal>
-        )
-    }
+    let upload, detailFile, file;
 
     return (
         <Modal isOpen={true} >
@@ -72,17 +55,7 @@ export const Submit = ({ classes, close, data }) => {
                 </div>
             </div>
             <div className={classes.sSubmit} >
-                <button className={null} onClick={async e => {
-                    if (file !== undefined) {
-                        await uploadFileTodo({ 
-                                variables: { file, id: data._id },
-                                refetchQueries: ["getWorkme"] 
-                            }
-                        )
-
-                        close();
-                    }
-                }} >ส่ง</button>
+                <button className={null} onClick={null} >ส่ง</button>
                 <button onClick={close} >ยกเลิก</button>
             </div>
         </Modal>

@@ -1,0 +1,31 @@
+{
+    "Init Jss Style": {
+        "scope": "javascript,typescript",
+        "prefix": "stru-style",
+        "body": [
+            "import jss from 'react-jss'",
+            "const style ={",
+            "",
+            "};",
+            "export default (component)=>jss(style)(component)"
+        ],
+        "description": "Init Jss Style"
+    },
+    "Init Component": {
+        "scope": "javascript,typescript",
+        "prefix": "create-component",
+        "body": [
+            "import React from 'react';",
+            "import style from './style'",
+            "",
+            "const ${TM_FILENAME/(.*)\\..+$/$1/} = ({classes})=>{",
+            "\treturn (",
+            "\t\t<div></div>",
+            "\t)",
+            "};",
+            "",
+            "",
+            "export default style(${TM_FILENAME/(.*)\\..+$/$1/})"
+        ]
+    }
+}

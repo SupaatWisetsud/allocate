@@ -1,34 +1,28 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
+import React, { useState, useEffect } from 'react'
 import { Spinner } from '../../component'
 import {RequireWork} from './popup';
+import Axios from 'axios';
 
-const LIST_EMP = gql`
-    {
-        users {
-            _id
-            username
-            firstname
-            lastname
-            email
-            phone
-            img
-        }
-    }
-`
+
 export default ({ classes, toggle }) => {
-
-    const { loading } = useQuery(LIST_EMP, {
-        onCompleted: data => {
-            setEmp(data.users)
-        }
-    })
     
     const [emp, setEmp] = useState([])
     const [data, setData] = useState({})
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
+    useEffect(()=>{
+        
+        const callAPI = async () => {
+            setLoading(true)
+            await Axios.get(`http://localhost:4000/api/users`)
+            .then(res => setEmp(res.data))
+            .catch(err => null)
+            setLoading(false)
+        }
+        callAPI();
+        
+    }, [])
     return (
         <>
             {loading && <Spinner /> }

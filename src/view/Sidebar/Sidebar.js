@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { decode } from 'jsonwebtoken'
 import { NavLink } from 'react-router-dom'
 import style from './style'
-import route from '../RootView/router';
+import route from '../router';
 
 const Sidebar = ({ classes }) => {
 

@@ -1,57 +1,42 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
+import React, { useState, useEffect } from 'react'
 import style from './style'
-import Sidebar from '../../view/Sidebar'
 import Post from './Post'
 import { Spinner } from '../../component'
+import Axios from 'axios'
 
-const NEW_FEED = gql`
-    {
-        newfeeds {
-            title
-            detail
-            status
-            datestatus
-            worker {
-                firstname
-                lastname
-            }
-        }
-    }
-`;
-
-const Dashboard = ({ classes }) => {
+const Dashboard = ({classes}) => {
 
     const [newfeed, setNewfeed] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const { loading } = useQuery(NEW_FEED, {
-        onCompleted: data => {
-            setNewfeed(data.newfeeds)
+    useEffect(() => {
+        const callAPI = () => {
+            setLoading(true);
+            Axios.get("http://localhost:4000/api/newfeeds")
+            .then(res => {
+                setLoading(false)
+                if(res.data){
+                    setNewfeed(res.data);
+                }
+            })
+            .catch(err => null)
         }
-    });
-    
+        callAPI();
+    }, [])
+
     return (
-        <>
+        <div className={classes.wrapperPost}>
             {loading && <Spinner />}
-            <div className={classes.container}>
-                <Sidebar />
-                <div className={classes.content}>
-                    <div className={classes.wrapperPost}>
-                        <header className={classes.title}>
-                            <span>ฟิดข่าว</span>
-                        </header>
-                        {
-                            newfeed.map((n, i) => (
-                                <Post key={i} classes={classes} data={n} />
-                            ))
-                        }
-                    </div>
-                </div>
-            </div>
-        </>
+            <header className={classes.title}>
+                <span>ฟิดข่าว</span>
+            </header>
+            {
+                newfeed.map((n, i) => (
+                    <Post key={i} classes={classes} data={n} />
+                ))
+            }
+        </div>
     )
 }
-
 
 export default style(Dashboard)
