@@ -17,7 +17,7 @@ const style = {
         position : 'relative',
         padding : 10,
         borderRadius : 5,
-        maxWidth : 550,
+        maxWidth : 1050,
         maxHeight : 700,
         animation : '$inModal .5s forwards'
     },

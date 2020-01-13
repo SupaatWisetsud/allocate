@@ -23,11 +23,11 @@ export const RequireWork = ({ classes, data, close }) => {
 
     return (
         <Modal isOpen={true} >
-            <div className={classes.titleJobCard} >
+            <div className={classes.header} >
                 <p>สั่งงาน</p>
                 <p>ถึงคุณ : {data.firstname} {data.lastname} </p>
             </div>
-            <div className={classes.wrapperJobCardForm}>
+            <div className={classes.divForm}>
                 <form onSubmit={_onSubmit}>
                     <div>
                         <p>หัวข้อเรื่อง</p>

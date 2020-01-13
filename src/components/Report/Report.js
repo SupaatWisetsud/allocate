@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { decode } from 'jsonwebtoken';
 import Axios from 'axios'
 import style from './style'
-import { Spinner } from '../../component'
+import { Spinner, Detail } from '../../component'
 import { RequireWork } from './popup'
 
 const Report = ({ classes, data }) => {
@@ -12,6 +12,7 @@ const Report = ({ classes, data }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [work, setWork] = useState([]);
     const [loading, setLoading] = useState(false)
+    const [detail, setDetail] = useState({ data : {}, status: false});
 
     useEffect(() => {
         const callAPI = async () => {
@@ -50,6 +51,7 @@ const Report = ({ classes, data }) => {
     return (
         <>
             {loading && <Spinner />}
+            {detail.status && <Detail data={detail.data} close={e => setDetail({data:{}, status: false})} />}
             <RequireWork classes={classes} isOpen={isOpen} close={e => setIsOpen(false)} work={work} />
             <div className={classes.wrapper}>
                 <header className={classes.title}>
@@ -75,7 +77,7 @@ const Report = ({ classes, data }) => {
                                 <td>{n.worker.firstname} {n.worker.lastname}</td>
                                 <td> {n.deadline === null ? "ไม่มีกำหนด" : n.w_deadline} </td>
                                 <td>
-                                    <button >เปิด</button>
+                                    <button onClick={ e => setDetail({data:n, status: true}) } >เปิด</button>
                                 </td>
                                 <td>
 

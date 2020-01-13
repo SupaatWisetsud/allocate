@@ -23,6 +23,8 @@ const Login = ({ classes, history }) => {
             if(res.data.status){
                 localStorage.setItem("nodeToken", res.data.token);
                 history.push('/');
+            }else{
+                alert("Username หรือ Password ของท่านไม่ถูกต้อง");
             }
         })
         .catch(err => null);

@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { Modal } from '../../../component'
+import { Detail } from '../../../component';
 
 
 export const RequireWork = ({ classes, isOpen, close, work }) => {
-    
-    const [togle, setTogle] = useState(true)
-    const [detail, setDetail] = useState({})
+
+    const [detail, setDetail] = useState({ data: {}, status: false });
 
     return (
         <Modal isOpen={isOpen} >
-            {togle ?
+            {!detail.status ?
                 <React.Fragment>
-                    <div className={classes.titleWork}>
+                    <div className={classes.header}>
                         <p>งานที่สั่ง</p>
                         <button onClick={close}>ปิด</button>
                     </div>
@@ -35,7 +35,7 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                                     <td>{n.deadline}</td>
                                     <td>รอรับ</td>
                                     <td>
-                                        <button onClick={e => { setDetail(n); setTogle(false) }} >เปิด</button>
+                                        <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
                                     </td>
                                 </tr>
                             ))}
@@ -43,20 +43,7 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                     </table>
                 </React.Fragment>
                 :
-                <React.Fragment>
-                    <div>
-                        <button onClick={e => setTogle(true)} >กลับ</button>
-                        <p>รายละเอียด</p>
-                    </div>
-                    <div>
-                        <p>ถึงคุณ : {detail.m_firstname} {detail.m_lastname} </p>
-                    </div>
-                    <div>
-                        <p>หัวเรื่อง : {detail.w_title}</p>
-                        <p>รายละเอียด : {detail.w_detail}</p>
-                        <p>กำหนดส่ง : {detail.w_deadline}</p>
-                    </div>
-                </React.Fragment>
+                <Detail data={detail.data} close={e => setDetail({ data: {}, status: false })} />
             }
 
         </Modal>

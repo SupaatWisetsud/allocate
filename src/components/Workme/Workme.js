@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { decode } from 'jsonwebtoken';
 import Axios from 'axios'
 import style from './style'
-import { Spinner } from '../../component'
+import { Spinner, Detail } from '../../component'
 import { Submit, Newwork } from './popup'
 
 const Workme = ({ classes }) => {
@@ -12,6 +12,7 @@ const Workme = ({ classes }) => {
     const [select, setSelect] = useState({})
     const [newwork, setNewwork] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [detail, setDetail] = useState({data: {}, status: false});
 
     useEffect(() => {
 
@@ -30,8 +31,9 @@ const Workme = ({ classes }) => {
     return (
         <>
             {loading && <Spinner />}
+            {detail.status && <Detail data={detail.data} close={e => setDetail({data: {}, status: false})}  />}
             {submit && <Submit classes={classes} close={e => { setSubmit(false); setSelect({}) }} data={select} setWorkme={setWorkme} />}
-            {newwork && <Newwork close={e => setNewwork(false)} data={workme} setWorkme={setWorkme} />}
+            {newwork && <Newwork classes={classes} close={e => setNewwork(false)} data={workme} setWorkme={setWorkme} />}
             <div className={classes.wrapper}>
                 <header className={classes.title}>
                     <span>งานที่กำลังดำเนินการ</span>
@@ -56,7 +58,7 @@ const Workme = ({ classes }) => {
                                 <td>{n.commander.firstname} {n.commander.lastname}</td>
                                 <td> {n.deadline} </td>
                                 <td>
-                                    <button>เปิด</button>
+                                    <button onClick={e => setDetail({data: n, status: true})} >เปิด</button>
                                 </td>
                                 <td>
                                     <button onClick={e => {

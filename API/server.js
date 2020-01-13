@@ -78,6 +78,17 @@ app.post('/api/workme', async (req, res) => {
     res.json({ status: true })
 });
 
+app.post("/api/editprofile/:id", async (req, res) => {
+    
+    const { id } = req.params;
+    const user = await userModel.findById(id).exec();
+    
+    if(req.files !== null){
+
+    }
+
+});
+
 app.get("/api/newfeeds", async (req, res) => {
     const work = await workModel.find({})
         .nor([{ status: "send" }])

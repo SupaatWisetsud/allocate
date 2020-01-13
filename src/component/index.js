@@ -1,10 +1,10 @@
 
 import Spinner from './Spinner';
 import Modal from './Modal';
-import Pagination from './Pagination';
+import Detail from './Detail'
 
 export {
     Spinner,
     Modal,
-    Pagination
+    Detail
 }
