@@ -48,7 +48,9 @@ export const Newwork = ({ classes, close, data, setWorkme }) => {
                                 <td> {i + 1} </td>
                                 <td>{n.title}</td>
                                 <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                <td> {n.deadline} </td>
+                                <td> 
+                                    {n.deadline || "ไม่มีกำหนด"} 
+                                </td>
                                 <td>
                                     <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
                                 </td>

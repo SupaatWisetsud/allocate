@@ -32,7 +32,7 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                                     <td>{n._id}</td>
                                     <td>{n.title}</td>
                                     <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                    <td>{n.deadline}</td>
+                                    <td>{n.deadline || "ไม่มีกำหนด"}</td>
                                     <td>รอรับ</td>
                                     <td>
                                         <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>

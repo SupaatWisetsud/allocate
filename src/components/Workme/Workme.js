@@ -51,23 +51,36 @@ const Workme = ({ classes }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {workme.map((n, i) => (
-                            n.status === "proceed" && <tr key={n._id} >
-                                <td> {i + 1} </td>
-                                <td>{n.title}</td>
-                                <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                <td> {n.deadline} </td>
-                                <td>
-                                    <button onClick={e => setDetail({data: n, status: true})} >เปิด</button>
-                                </td>
-                                <td>
-                                    <button onClick={e => {
-                                        setSubmit(true);
-                                        setSelect(n)
-                                    }} >ส่งงาน</button>
-                                </td>
-                            </tr>
-                        ))}
+                        {workme.map((n, i) => {
+                            let deadbtn = true;
+                            if(n.deadline && n.status === "proceed"){
+                                let dateNow = new Date(), dateDeadline = new Date(n.deadline);
+                                deadbtn = dateNow < dateDeadline;
+                            }
+                            
+                            return (
+                                n.status === "proceed" && <tr key={n._id} >
+                                    <td> {i + 1} </td>
+                                    <td>{n.title}</td>
+                                    <td>{n.commander.firstname} {n.commander.lastname}</td>
+                                    <td> {n.deadline || "ไม่มีกำหนด"} </td>
+                                    <td>
+                                        <button onClick={e => setDetail({data: n, status: true})} >เปิด</button>
+                                    </td>
+                                    <td>
+                                        {
+                                        deadbtn?
+                                        <button onClick={e => {
+                                            setSubmit(true);
+                                            setSelect(n)
+                                        }} >ส่งงาน</button>
+                                        :
+                                        <p style={{color: "red"}}>หมดกำหนดส่ง</p>
+                                        }
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>

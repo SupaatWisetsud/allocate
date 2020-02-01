@@ -20,7 +20,6 @@ const DefaultLayout = props => {
                                 <Route
                                     key={idx}
                                     path={route.path}
-                                    exact={route.exact}
                                     name={route.name}
                                     component={route.component} />
                             ) : (null);

@@ -75,7 +75,7 @@ const Report = ({ classes, data }) => {
                                 <td> {n._id} </td>
                                 <td>{n.title}</td>
                                 <td>{n.worker.firstname} {n.worker.lastname}</td>
-                                <td> {n.deadline === null ? "ไม่มีกำหนด" : n.w_deadline} </td>
+                                <td> {n.deadline || "ไม่มีกำหนด"} </td>
                                 <td>
                                     <button onClick={ e => setDetail({data:n, status: true}) } >เปิด</button>
                                 </td>
