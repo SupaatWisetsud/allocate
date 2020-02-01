@@ -1,9 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { decode } from 'jsonwebtoken';
-import Axios from 'axios'
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 import style from './style'
 import { Spinner, Detail } from '../../component'
 import { RequireWork } from './popup'
+import Axios from 'axios';
+
+const GQL_Query = gql`
+    query getData($id: ID!) {
+        workorder(id: $id) {
+            _id
+            title
+            deadline
+            commander {
+                firstname
+                lastname
+            }
+        }
+        report {
+            _id
+            title
+            deadline
+            path
+            worker {
+                firstname
+                lastname
+            }
+        }
+    }
+`
 
 const Report = ({ classes, data }) => {
 
@@ -11,32 +37,27 @@ const Report = ({ classes, data }) => {
     const [user, setUser] = useState(false);
     const [isOpen, setIsOpen] = useState(false)
     const [work, setWork] = useState([]);
-    const [loading, setLoading] = useState(false)
-    const [detail, setDetail] = useState({ data : {}, status: false});
+    const [detail, setDetail] = useState({ data: {}, status: false });
+
+    const { data: dataReport, loading, refetch } = useQuery(GQL_Query, {
+        variables: {
+            id: decode(localStorage.getItem("nodeToken"))._doc._id
+        }
+    });
 
     useEffect(() => {
-        const callAPI = async () => {
-            setLoading(true);
-            await Axios.get("http://localhost:4000/api/reports")
-            .then(res => {
-                setReport(res.data);
-            })
-            .catch(err => null)
-            await Axios.get(`http://localhost:4000/api/workorders/${decode(localStorage.getItem("nodeToken"))._doc._id}`)
-            .then(res => {
-                setWork(res.data)
-            })
-            .catch(err=>null);
-            setLoading(false);
+        refetch();
+        if (dataReport) {
+            setReport(dataReport.report);
+            setWork(dataReport.workorder);
         }
-        callAPI();
-
         setUser(decode(localStorage.getItem("nodeToken"))._doc);
-    }, []);
+        
+    }, [dataReport, refetch]);
 
     const downloadFile = (filename) => {
         Axios({
-            url: `http://localhost:4000/upload/${filename}`,
+            url: `http://localhost:5000/upload/${filename}`,
             method: 'GET',
             responseType: 'blob', // important
         }).then((response) => {
@@ -51,7 +72,7 @@ const Report = ({ classes, data }) => {
     return (
         <>
             {loading && <Spinner />}
-            {detail.status && <Detail data={detail.data} close={e => setDetail({data:{}, status: false})} />}
+            {detail.status && <Detail data={detail.data} close={e => setDetail({ data: {}, status: false })} />}
             <RequireWork classes={classes} isOpen={isOpen} close={e => setIsOpen(false)} work={work} />
             <div className={classes.wrapper}>
                 <header className={classes.title}>
@@ -70,18 +91,17 @@ const Report = ({ classes, data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {report.map(n => (
+                        {report.map((n, i)=> (
                             <tr key={n._id} >
-                                <td> {n._id} </td>
+                                <td> {i+1} </td>
                                 <td>{n.title}</td>
                                 <td>{n.worker.firstname} {n.worker.lastname}</td>
                                 <td> {n.deadline || "ไม่มีกำหนด"} </td>
                                 <td>
-                                    <button onClick={ e => setDetail({data:n, status: true}) } >เปิด</button>
+                                    <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
                                 </td>
                                 <td>
-
-                                    {n.path.map(p => <p key={p} onClick={e => downloadFile(p)} >{p}</p>)}
+                                    {n.path.map(p => <p key={p} style={{border: "1px solid #333", cursor: "pointer"}} onClick={e => downloadFile(p)} >{p}</p>)}
                                 </td>
                             </tr>
                         ))}

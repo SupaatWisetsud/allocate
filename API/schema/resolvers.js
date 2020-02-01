@@ -14,13 +14,14 @@ export const resolvers = {
                 .nor([{ status: "send" }])
                 .populate("worker")
                 .populate("commander")
+                .sort({datestatus: "desc"})
                 .exec();
 
             return work
         },
         users: async () => await userModel.find({ status: "user" }, "-password").exec(),
         report: async () => await workModel.find({ status: "success" }).populate("worker").exec(),
-        workme: async (parent, { id, status }) => await workModel.find({ worker: id, status }).populate('commander').populate('worker').exec(),
+        workme: async (parent, { id, status }) => await workModel.find({ worker: id }).populate('commander').populate('worker').exec(),
         workorder: async (parent, { id }, context, info) => await workModel.find({ commander: id }).populate("commander").exec()
     },
     Mutation: {
@@ -79,11 +80,23 @@ export const resolvers = {
             return true
         },
         deluser: async (parent, { id }) => {
-            
+
             await userModel.deleteOne({ _id: id });
             await workModel.deleteOne({ worker: id });
 
-            return true
+            return true;
+        },
+        editprofile: async (_, args) => {
+
+            await userModel.updateOne({ _id: args.id }, {
+                username: args.username,
+                firstname: args.firstname,
+                lastname: args.lastname,
+                email: args.email,
+                phone: args.phone,
+            }).exec();
+
+            return true;
         }
     }
 }

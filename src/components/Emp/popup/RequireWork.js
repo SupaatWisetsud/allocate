@@ -1,21 +1,31 @@
 import React from 'react'
-import Axios from 'axios'
+import { useMutation } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 import { decode } from 'jsonwebtoken'
 import { Modal } from '../../../component'
 
+const ADDWROK = gql`
+    mutation addwork($title: String!, $detail: String, $deadline: String, $worker: String!, $commander: String!){
+        addwork(title: $title, detail: $detail, deadline: $deadline, worker: $worker, commander: $commander)
+    }
+`;
 export const RequireWork = ({ classes, data, close }) => {
+
+    const [mutationAddwork] = useMutation(ADDWROK);
 
     let title, detail, deadline;
 
     const _onSubmit = async e => {
         e.preventDefault();
         
-        await Axios.post(`http://localhost:4000/api/addwork`, {
-            title: title.value,
-            detail: detail.value,
-            deadline: deadline.value,
-            worker: data._id,
-            commander: decode(localStorage.getItem("nodeToken"))._doc._id
+        mutationAddwork({
+            variables: {
+                title: title.value,
+                detail: detail.value,
+                deadline: deadline.value,
+                worker: data._id,
+                commander: decode(localStorage.getItem("nodeToken"))._doc._id
+            }
         })
 
         close();

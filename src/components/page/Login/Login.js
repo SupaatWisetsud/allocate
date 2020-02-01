@@ -1,33 +1,45 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
+import { useMutation } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 import { Redirect } from 'react-router-dom';
 import style from './style';
 import { Spinner } from '../../../component'
 
+const LOGIN = gql`
+    mutation login($username: String!, $password: String!){
+        login(username: $username, password: $password){
+            token
+            status
+        }
+    }
+`;
 const Login = ({ classes, history }) => {
-
-    const [redirect] = useState(false);
-    const [loading, setLoading] = useState(false);
-    let username, password;
     
+    const [redirect, setRedirect] = useState(false);
+
+    const [mutationLogin, { loading }] = useMutation(LOGIN, {
+        onCompleted: ({ login }) => {
+            if (login.status) {
+                localStorage.setItem("nodeToken", login.token);
+                setRedirect(true)
+            } else {
+                alert("Username หรือ Password ของท่านไม่ถูกต้อง..")
+            }
+        }
+    });
+
+
+    let username, password;
+
     const _onLogin = async e => {
         e.preventDefault();
-        setLoading(true);
-        Axios.post("http://localhost:4000/api/login", {
-            username : username.value,
-            password : password.value
-        })
-        .then(res => {
-            setLoading(false);
-            
-            if(res.data.status){
-                localStorage.setItem("nodeToken", res.data.token);
-                history.push('/');
-            }else{
-                alert("Username หรือ Password ของท่านไม่ถูกต้อง");
+
+        mutationLogin({
+            variables: {
+                username: username.value,
+                password: password.value
             }
         })
-        .catch(err => null);
 
         username.value = "";
         password.value = "";

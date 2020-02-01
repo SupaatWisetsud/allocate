@@ -4,10 +4,10 @@ export const typeDefs = gql`
 scalar Date
 type Query {
     newfeeds: [Post]!
-    users: [User]
-    report: [Report]
-    workme(id: ID!, status: String!): [Work]
-    workorder(id: ID!): [Work]
+    users: [User]!
+    report: [Post]!
+    workme(id: ID!): [Work]!
+    workorder(id: ID!): [Work]!
 }
 type Mutation {
     login(username: String!, password: String!): Login!
@@ -30,7 +30,16 @@ type Mutation {
         commander: String!
     ): Boolean!
     workme(id: ID!, status: String!): Boolean!
-    deluser(id: ID!): Boolean!
+    deluser(id: ID!): Boolean!,
+    editprofile(
+        id: ID!,
+        username: String!, 
+        firstname: String!,
+        lastname: String!,
+        email: String!,
+        img: Upload,
+        phone: String!
+    ): Boolean!
 }
 type Login{
     token: String
@@ -67,18 +76,6 @@ type Post {
     deadline: Date,
     datestatus: Date,
     datesubmit: Date,
-    status: String,
-    path: String,
-}
-type Report {
-    _id: String,
-    title: String,
-    detail: String,
-    worker: User,
-    commander: User,
-    deadline: String,
-    datestatus: String,
-    datesubmit: String,
     status: String,
     path: [String],
 }

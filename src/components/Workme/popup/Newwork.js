@@ -1,25 +1,29 @@
 import React, { useState } from 'react'
+import { useMutation } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 import { Modal } from '../../../component'
-import { decode } from 'jsonwebtoken';
-import Axios from 'axios'
-import { Detail } from '../../../component'
+import { Detail } from '../../../component';
 
-export const Newwork = ({ classes, close, data, setWorkme }) => {
+const UPDATEWORK = gql`
+    mutation workme($id: ID!, $status: String!){
+        workme(id: $id, status: $status)
+    }
+`;
+export const Newwork = ({ classes, close, data, refetch }) => {
 
     const [detail, setDetail] = useState({ data: {}, status: false });
+    
+    const [mutationUpdateWork] = useMutation(UPDATEWORK);
 
-    const workConFrim = async (id, status) => {
-        await Axios.post(`http://localhost:4000/api/workme`, {
-            id,
-            status
-        })
-            .then(res => null)
-            .catch(err => null)
-        await Axios.get(`http://localhost:4000/api/workemes/${decode(localStorage.getItem("nodeToken"))._doc._id}`)
-            .then(res => {
-                setWorkme(res.data)
-            })
-            .catch(err => null)
+    const workConFrim = async (id) => {
+        
+        await mutationUpdateWork({
+            variables: {
+                id,
+                status: "proceed"
+            }
+        });
+        refetch();
     }
 
     return (
@@ -48,14 +52,14 @@ export const Newwork = ({ classes, close, data, setWorkme }) => {
                                 <td> {i + 1} </td>
                                 <td>{n.title}</td>
                                 <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                <td> 
-                                    {n.deadline || "ไม่มีกำหนด"} 
+                                <td>
+                                    {n.deadline || "ไม่มีกำหนด"}
                                 </td>
                                 <td>
                                     <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
                                 </td>
                                 <td>
-                                    <button onClick={e => workConFrim(n._id, "proceed")} >รับ</button>
+                                    <button onClick={e => workConFrim(n._id)} >รับ</button>
                                 </td>
                             </tr>
                         ))}

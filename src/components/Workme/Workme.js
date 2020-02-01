@@ -1,39 +1,52 @@
 import React, { useState, useEffect } from 'react'
 import { decode } from 'jsonwebtoken';
-import Axios from 'axios'
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 import style from './style'
 import { Spinner, Detail } from '../../component'
 import { Submit, Newwork } from './popup'
 
+const WORKME = gql`
+    query workme($id: ID!){
+        workme(id: $id){
+            _id
+            title
+            detail
+            deadline
+            status
+            commander {
+                firstname
+                lastname
+            }
+        }
+    }
+`;
 const Workme = ({ classes }) => {
 
     const [submit, setSubmit] = useState(false)
     const [workme, setWorkme] = useState([])
     const [select, setSelect] = useState({})
     const [newwork, setNewwork] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [detail, setDetail] = useState({data: {}, status: false});
+    const [detail, setDetail] = useState({ data: {}, status: false });
+
+    const { data, loading, refetch } = useQuery(WORKME, {
+        variables: {
+            id: decode(localStorage.getItem("nodeToken"))._doc._id
+        }
+    });
 
     useEffect(() => {
-
-        const callAPI = async () => {
-            setLoading(true);
-            await Axios.get(`http://localhost:4000/api/workemes/${decode(localStorage.getItem("nodeToken"))._doc._id}`)
-            .then(res => {
-                setWorkme(res.data)
-            })
-            .catch(err => null)
-            setLoading(false);
-        }
-        callAPI();
-    }, [])
+        refetch();
+        if (data) setWorkme(data.workme)
+        
+    }, [data, refetch])
 
     return (
         <>
             {loading && <Spinner />}
-            {detail.status && <Detail data={detail.data} close={e => setDetail({data: {}, status: false})}  />}
-            {submit && <Submit classes={classes} close={e => { setSubmit(false); setSelect({}) }} data={select} setWorkme={setWorkme} />}
-            {newwork && <Newwork classes={classes} close={e => setNewwork(false)} data={workme} setWorkme={setWorkme} />}
+            {detail.status && <Detail data={detail.data} close={e => setDetail({ data: {}, status: false })} />}
+            {submit && <Submit classes={classes} close={e => { setSubmit(false); setSelect({}) }} data={select} refetch={refetch} />}
+            {newwork && <Newwork classes={classes} close={e => setNewwork(false)} data={workme} refetch={refetch} />}
             <div className={classes.wrapper}>
                 <header className={classes.title}>
                     <span>งานที่กำลังดำเนินการ</span>
@@ -53,11 +66,11 @@ const Workme = ({ classes }) => {
                     <tbody>
                         {workme.map((n, i) => {
                             let deadbtn = true;
-                            if(n.deadline && n.status === "proceed"){
+                            if (n.deadline && n.status === "proceed") {
                                 let dateNow = new Date(), dateDeadline = new Date(n.deadline);
                                 deadbtn = dateNow < dateDeadline;
                             }
-                            
+
                             return (
                                 n.status === "proceed" && <tr key={n._id} >
                                     <td> {i + 1} </td>
@@ -65,17 +78,17 @@ const Workme = ({ classes }) => {
                                     <td>{n.commander.firstname} {n.commander.lastname}</td>
                                     <td> {n.deadline || "ไม่มีกำหนด"} </td>
                                     <td>
-                                        <button onClick={e => setDetail({data: n, status: true})} >เปิด</button>
+                                        <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
                                     </td>
                                     <td>
                                         {
-                                        deadbtn?
-                                        <button onClick={e => {
-                                            setSubmit(true);
-                                            setSelect(n)
-                                        }} >ส่งงาน</button>
-                                        :
-                                        <p style={{color: "red"}}>หมดกำหนดส่ง</p>
+                                            deadbtn ?
+                                                <button onClick={e => {
+                                                    setSubmit(true);
+                                                    setSelect(n)
+                                                }} >ส่งงาน</button>
+                                                :
+                                                <p style={{ color: "red" }}>หมดกำหนดส่ง</p>
                                         }
                                     </td>
                                 </tr>

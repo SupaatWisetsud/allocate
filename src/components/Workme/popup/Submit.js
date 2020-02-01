@@ -1,32 +1,40 @@
 import React from 'react'
-import Axios from 'axios';
-import { decode } from 'jsonwebtoken';
+import { useMutation } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 import { Modal } from '../../../component'
 
-
-export const Submit = ({ classes, close, data, setWorkme }) => {
+const UPLOADFILE = gql`
+    mutation uploadFile($file: Upload!, $id: ID!){
+        uploadfile(file: $file, id: $id)
+    }
+    
+`
+export const Submit = ({ classes, close, data, refetch }) => {
 
     let upload, detailFile, file;
+    const [uploadFileTodo, { loading }] = useMutation(UPLOADFILE);
+    
+    if (loading) {
+        return (
+            <Modal>
+                <p>Loading...</p>
+            </Modal>
+        )
+    }
 
     const _onSubmitWork = async e => {
 
-        const fd = new FormData();
-        for (let n of file) fd.append("file", n);
-        fd.append("id", data._id);
-        
-        await Axios.post("http://localhost:4000/api/uploadfile", fd, { headers : {
-            "Content-Type" : "multipart/form-data"
-        }})
-        .catch(err=>null)
-
-        await Axios.get(`http://localhost:4000/api/workemes/${decode(localStorage.getItem("nodeToken"))._doc._id}`)
-        .then(res => {
-            setWorkme(res.data)
-        })
-        .catch(err => null)
+        if (file !== undefined) {
+            await uploadFileTodo({
+                variables: { file, id: data._id },
+            })
+            refetch();
+            close();
+        }
 
         close();
     }
+
     return (
         <Modal isOpen={true} >
             <div className={classes.sTitle}>
