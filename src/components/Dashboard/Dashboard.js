@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import style from './style'
 import Post from './Post'
-import { Spinner } from '../../component'
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
@@ -32,10 +31,10 @@ const Dashboard = ({ classes }) => {
 
     return (
         <div className={classes.wrapperPost}>
-            {loading && <Spinner />}
             <header className={classes.title}>
                 <span>ฟิดข่าว</span>
             </header>
+            {loading && <p>loading...</p>}
             {
                 newfeed.map((n, i) => (
                     <Post key={i} classes={classes} data={n} />

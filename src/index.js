@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import RootView from './view/RootView';
 import * as serviceWorker from './serviceWorker';
 
-
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { createUploadLink } from "apollo-upload-client";

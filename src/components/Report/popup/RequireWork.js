@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Modal } from '../../../component'
 import { Detail } from '../../../component';
-
+import Time from 'react-time-format'
 
 export const RequireWork = ({ classes, isOpen, close, work }) => {
 
@@ -32,7 +32,7 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                                     <td>{n._id}</td>
                                     <td>{n.title}</td>
                                     <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                    <td>{n.deadline || "ไม่มีกำหนด"}</td>
+                                    <td>{<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"}</td>
                                     <td>รอรับ</td>
                                     <td>
                                         <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>

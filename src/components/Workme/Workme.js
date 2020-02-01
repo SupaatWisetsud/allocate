@@ -3,8 +3,9 @@ import { decode } from 'jsonwebtoken';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import style from './style'
-import { Spinner, Detail } from '../../component'
+import { Detail } from '../../component'
 import { Submit, Newwork } from './popup'
+import Time from 'react-time-format';
 
 const WORKME = gql`
     query workme($id: ID!){
@@ -38,12 +39,11 @@ const Workme = ({ classes }) => {
     useEffect(() => {
         refetch();
         if (data) setWorkme(data.workme)
-        
+
     }, [data, refetch])
 
     return (
         <>
-            {loading && <Spinner />}
             {detail.status && <Detail data={detail.data} close={e => setDetail({ data: {}, status: false })} />}
             {submit && <Submit classes={classes} close={e => { setSubmit(false); setSelect({}) }} data={select} refetch={refetch} />}
             {newwork && <Newwork classes={classes} close={e => setNewwork(false)} data={workme} refetch={refetch} />}
@@ -64,6 +64,7 @@ const Workme = ({ classes }) => {
                         </tr>
                     </thead>
                     <tbody>
+                        {loading && <p>loading...</p>}
                         {workme.map((n, i) => {
                             let deadbtn = true;
                             if (n.deadline && n.status === "proceed") {
@@ -76,7 +77,7 @@ const Workme = ({ classes }) => {
                                     <td> {i + 1} </td>
                                     <td>{n.title}</td>
                                     <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                    <td> {n.deadline || "ไม่มีกำหนด"} </td>
+                                    <td> {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </td>
                                     <td>
                                         <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
                                     </td>

@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { Modal } from '../../../component'
 import { Detail } from '../../../component';
+import Time from 'react-time-format';
 
 const UPDATEWORK = gql`
     mutation workme($id: ID!, $status: String!){
@@ -53,7 +54,7 @@ export const Newwork = ({ classes, close, data, refetch }) => {
                                 <td>{n.title}</td>
                                 <td>{n.commander.firstname} {n.commander.lastname}</td>
                                 <td>
-                                    {n.deadline || "ไม่มีกำหนด"}
+                                    {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"}
                                 </td>
                                 <td>
                                     <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>

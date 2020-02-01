@@ -3,9 +3,10 @@ import { decode } from 'jsonwebtoken';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import style from './style'
-import { Spinner, Detail } from '../../component'
+import { Detail } from '../../component'
 import { RequireWork } from './popup'
 import Axios from 'axios';
+import Time from 'react-time-format'
 
 const GQL_Query = gql`
     query getData($id: ID!) {
@@ -52,7 +53,7 @@ const Report = ({ classes, data }) => {
             setWork(dataReport.workorder);
         }
         setUser(decode(localStorage.getItem("nodeToken"))._doc);
-        
+
     }, [dataReport, refetch]);
 
     const downloadFile = (filename) => {
@@ -71,7 +72,6 @@ const Report = ({ classes, data }) => {
     }
     return (
         <>
-            {loading && <Spinner />}
             {detail.status && <Detail data={detail.data} close={e => setDetail({ data: {}, status: false })} />}
             <RequireWork classes={classes} isOpen={isOpen} close={e => setIsOpen(false)} work={work} />
             <div className={classes.wrapper}>
@@ -91,17 +91,19 @@ const Report = ({ classes, data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {report.map((n, i)=> (
+                        {loading && <p>loading...</p>}
+                        {report.map((n, i) => (
                             <tr key={n._id} >
-                                <td> {i+1} </td>
+                                <td> {i + 1} </td>
                                 <td>{n.title}</td>
                                 <td>{n.worker.firstname} {n.worker.lastname}</td>
-                                <td> {n.deadline || "ไม่มีกำหนด"} </td>
+                                <td> {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </td>
+                                
                                 <td>
                                     <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
                                 </td>
                                 <td>
-                                    {n.path.map(p => <p key={p} style={{border: "1px solid #333", cursor: "pointer"}} onClick={e => downloadFile(p)} >{p}</p>)}
+                                    {n.path.map(p => <p key={p} style={{ border: "1px solid #333", cursor: "pointer" }} onClick={e => downloadFile(p)} >{p}</p>)}
                                 </td>
                             </tr>
                         ))}

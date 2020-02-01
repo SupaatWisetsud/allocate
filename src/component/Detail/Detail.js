@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './style';
 import { Modal } from '../index'
+import Time from 'react-time-format'
 
 const Detail = ({ classes, data, close }) => {
     return (
@@ -18,7 +19,7 @@ const Detail = ({ classes, data, close }) => {
                 <p>รายละเอียด : {data.detail}</p>
             </div>
             <div className={classes.div}>
-                <p>เวลาที่กำหนดส่ง : {data.deadline} </p>
+                <p>เวลาที่กำหนดส่ง : {<Time value={data.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </p>
             </div>
         </Modal>
     )
