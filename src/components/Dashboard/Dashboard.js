@@ -2,27 +2,33 @@ import React, { useState, useEffect } from 'react'
 import style from './style'
 import Post from './Post'
 import { Spinner } from '../../component'
-import Axios from 'axios'
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
 
-const Dashboard = ({classes}) => {
+const NEW_FEED = gql`
+    {
+        newfeeds {
+            title
+            detail
+            status
+            datestatus
+            worker {
+                firstname
+                lastname
+            }
+        }
+    }
+`;
+
+const Dashboard = ({ classes }) => {
 
     const [newfeed, setNewfeed] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const { data, loading, refetch} = useQuery(NEW_FEED);
 
     useEffect(() => {
-        const callAPI = () => {
-            setLoading(true);
-            Axios.get("http://localhost:4000/api/newfeeds")
-            .then(res => {
-                setLoading(false)
-                if(res.data){
-                    setNewfeed(res.data);
-                }
-            })
-            .catch(err => null)
-        }
-        callAPI();
-    }, [])
+        refetch();
+        if(data) setNewfeed(data.newfeeds)
+    }, [data, refetch]);
 
     return (
         <div className={classes.wrapperPost}>

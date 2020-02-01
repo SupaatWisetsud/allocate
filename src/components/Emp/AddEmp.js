@@ -1,29 +1,41 @@
 import React from 'react'
-import Axios from 'axios';
+import { useMutation } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 
+const APP_EMP = gql`
+    mutation Add_EMP($username: String!, $password: String!, $firstname: String!, $lastname: String!, $email: String!, $img: Upload, $phone: String!, $status: String!){
+        register(
+            username: $username, 
+            password: $password, 
+            firstname: $firstname,
+            lastname: $lastname,
+            email: $email,
+            img: $img,
+            phone: $phone,
+            status: $status,
+        )
+    }
+`;
 const AddEmp = ({ classes, toggle }) => {
 
+    const [mutaAddemp] = useMutation(APP_EMP)
     let username, password, fname, lname, email, phone, status, file;
 
     const _onSubmit = e => {
         e.preventDefault();
-        
-        const fd = new FormData();
-        
-        fd.append("username", username.value);
-        fd.append("password", password.value);
-        fd.append("firstname", fname.value);
-        fd.append("lastname", lname.value);
-        fd.append("email", email.value);
-        fd.append("phone", phone.value);
-        fd.append("status", status.value);
-        fd.append("file", file.files[0]);
-
-        Axios.post(`http://localhost:4000/api/register`, fd, {headers: {
-            "Content-Type" : "multipart/form-data"
-        }})
-        .then(res => null)
-        .catch(err => null)
+        mutaAddemp({
+            variables: {
+                username: username.value,
+                password: password.value,
+                firstname: fname.value,
+                lastname: lname.value,
+                email: email.value,
+                phone: phone.value,
+                status: status.value,
+                img: file.files[0]
+            }
+        });
+        toggle();
     }
     return (
         <React.Fragment>
