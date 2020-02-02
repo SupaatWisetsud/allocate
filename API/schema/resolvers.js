@@ -22,7 +22,7 @@ export const resolvers = {
         users: async () => await userModel.find({ status: "user" }, "-password").exec(),
         report: async () => await workModel.find({ status: "success" }).populate("worker").exec(),
         workme: async (parent, { id, status }) => await workModel.find({ worker: id }).populate('commander').populate('worker').exec(),
-        workorder: async (parent, { id }, context, info) => await workModel.find({ commander: id }).populate("commander").exec()
+        workorder: async (parent, { id }, context, info) => await workModel.find({ commander: id }).populate("commander").populate('worker').exec()
     },
     Mutation: {
         login: async (parent, { username, password }, context, info) => {
@@ -42,13 +42,8 @@ export const resolvers = {
             return result
         },
         register: async (parent, args, context, info) => {
-            if (!args.img) {
-                await userModel.create({ ...args });
-            } else {
-                // await userModel.create({...args, file: `/img/user/${args.img.filename}`});
-            }
+            await userModel.create({ ...args });
             return true
-
         },
         uploadfile: async (parent, { file, id }, context, info) => {
 
@@ -88,12 +83,14 @@ export const resolvers = {
         },
         editprofile: async (_, args) => {
 
+            const user = await userModel.findById(args.id);
             await userModel.updateOne({ _id: args.id }, {
                 username: args.username,
                 firstname: args.firstname,
                 lastname: args.lastname,
                 email: args.email,
                 phone: args.phone,
+                password: args.password? md5(args.password) : user.password 
             }).exec();
 
             return true;

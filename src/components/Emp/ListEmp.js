@@ -51,16 +51,16 @@ export default ({ classes, toggle }) => {
                     <thead>
                         <tr>
                             <td>No.</td>
-                            <td>Name</td>
-                            <td>email</td>
-                            <td>Profile</td>
-                            <td>Number Phone</td>
-                            <td>Work</td>
-                            <td>Delete</td>
+                            <td>ชื่อ</td>
+                            <td>อีเมลล์</td>
+                            <td>รูปโปรไฟล์</td>
+                            <td>เบอร์โทรศศัพ</td>
+                            <td>สั่งงาน</td>
+                            <td>ลบ</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {loading && <p>Loading...</p>}
+
                         {emp.map((n, i) => (
                             <tr key={n._id}>
                                 <td>{i + 1}</td>
@@ -68,7 +68,7 @@ export default ({ classes, toggle }) => {
                                 <td> {n.email} </td>
                                 <td> {n.phone} </td>
                                 <td>
-                                    <img src="logo192.png" alt=".." width={80} height={80} style={{ borderRadius: "50%", objectFit: "cover" }} />
+                                    <img src={`http://localhost:5000${n.img}`} alt={n.email} width={80} height={80} style={{objectFit: "cover" }} />
                                 </td>
                                 <td>
                                     <button onClick={e => {
@@ -90,6 +90,7 @@ export default ({ classes, toggle }) => {
                         ))}
                     </tbody>
                 </table>
+                {loading && <p>Loading...</p>}
             </div>
         </>
     )

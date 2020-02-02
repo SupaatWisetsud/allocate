@@ -10,7 +10,7 @@ const style = theme => ({
         padding: 10
     },
     wrapper: {
-        maxWidth: 850,
+        maxWidth: 1150,
         margin: "0 auto"
     },
     title: {

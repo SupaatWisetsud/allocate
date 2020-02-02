@@ -31,9 +31,13 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                                 <tr key={n._id}>
                                     <td>{i + 1}</td>
                                     <td>{n.title}</td>
-                                    <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                    <td>{<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"}</td>
-                                    <td>รอรับ</td>
+                                    <td>{n.worker.firstname} {n.worker.lastname}</td>
+                                    <td>{n.deadline ? <Time value={n.deadline} format="DD/MM/YYYY" /> : "ไม่มีกำหนด"}</td>
+                                    <td>
+                                        {n.status === "send" && "รอรับ"}
+                                        {n.status === "proceed" && "กำลังดำเนินการ"}
+                                        {n.status === "success" && "เสร็จสิ้น"}
+                                    </td>
                                     <td>
                                         <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn}>เปิด</button>
                                     </td>

@@ -64,7 +64,6 @@ const Workme = ({ classes }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {loading && <p>loading...</p>}
                         {workme.map((n, i) => {
                             let deadbtn = true;
                             if (n.deadline && n.status === "proceed") {
@@ -77,7 +76,7 @@ const Workme = ({ classes }) => {
                                     <td> {i + 1} </td>
                                     <td>{n.title}</td>
                                     <td>{n.commander.firstname} {n.commander.lastname}</td>
-                                    <td> {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </td>
+                                    <td> {n.deadline? <Time value={n.deadline} format="DD/MM/YYYY" />: "ไม่มีกำหนด"} </td>
                                     <td>
                                         <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn}>เปิด</button>
                                     </td>
@@ -97,6 +96,8 @@ const Workme = ({ classes }) => {
                         })}
                     </tbody>
                 </table>
+                
+                {loading && <p>loading...</p>}
             </div>
         </>
     )

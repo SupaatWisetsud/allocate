@@ -5,15 +5,15 @@ import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
 const EDITPORFILE = gql`
-    mutation editprofile($id: ID!, $username: String!, $firstname: String!, $lastname: String!, $email: String!, $img: Upload, $phone: String!){
+    mutation editprofile($id: ID!, $username: String!, $password: String, $firstname: String!, $lastname: String!, $email: String!, $phone: String!){
         editprofile(
             id: $id,
             username: $username, 
             firstname: $firstname,
             lastname: $lastname,
             email: $email,
-            img: $img,
             phone: $phone,
+            password: $password
         )
     }
 `;
@@ -24,7 +24,8 @@ class Editprofile extends React.Component {
         fname: "",
         lname: "",
         email: "",
-        phone: ""
+        phone: "",
+        password: ""
     }
 
     async UNSAFE_componentWillMount() {
@@ -55,10 +56,10 @@ class Editprofile extends React.Component {
                 <div className={classes.form}>
                     <Mutation mutation={EDITPORFILE}>
                         {(editTodo) => (
-                            <form onSubmit={e => {
+                            <form onSubmit={async e => {
                                 e.preventDefault();
 
-                                editTodo({
+                                await editTodo({
                                     variables: {
                                         id: decode(localStorage.getItem("nodeToken"))._doc._id,
                                         username: this.username_txt.value,
@@ -66,14 +67,19 @@ class Editprofile extends React.Component {
                                         lastname: this.lname_txt.value,
                                         email: this.email_txt.value,
                                         phone: this.phone_txt.value,
-                                        img: this.file_txt.files[0]
+                                        password: this.password_txt.value
                                     }
+                                }).then(res => {
+                                    alert("Update ข้อมูลเสร็จสิ้น");
                                 })
-                                alert("Update ข้อมูลเสร็จสิ้น");
                             }} >
                                 <div className={classes.itemsEdit}>
                                     <label>Username</label>
                                     <input type="text" defaultValue={username} ref={e => this.username_txt = e} />
+                                </div>
+                                <div className={classes.itemsEdit}>
+                                    <label>Password</label>
+                                    <input type="password" placeholder="***********" ref={e => this.password_txt = e} />
                                 </div>
                                 <div className={classes.itemsEdit2}>
                                     <div>
@@ -88,10 +94,6 @@ class Editprofile extends React.Component {
                                 <div className={classes.itemsEdit}>
                                     <label>Email</label>
                                     <input type="email" defaultValue={email} ref={e => this.email_txt = e} />
-                                </div>
-                                <div className={classes.itemsEdit}>
-                                    <label>Profile</label>
-                                    <input type="file" ref={e => this.file_txt = e} />
                                 </div>
                                 <div className={classes.itemsEdit}>
                                     <label>Number Phone</label>

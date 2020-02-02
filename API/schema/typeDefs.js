@@ -18,7 +18,6 @@ type Mutation {
         firstname: String!,
         lastname: String!,
         email: String!,
-        img: Upload,
         phone: String!,
         status: String!
     ): Boolean!
@@ -37,8 +36,8 @@ type Mutation {
         firstname: String!,
         lastname: String!,
         email: String!,
-        img: Upload,
-        phone: String!
+        phone: String!,
+        password: String
     ): Boolean!
 }
 type Login{

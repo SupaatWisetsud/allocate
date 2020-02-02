@@ -23,6 +23,7 @@ const apollo = new ApolloServer({
 })
 
 app.use('/upload', express.static('./API/upload'));
+app.use('/img', express.static('./API/img'));
 
 apollo.applyMiddleware({ app });
 

@@ -10,35 +10,35 @@ import {
 
 const router = [
     {
-        title : "Dashboard",
+        title : "หน้าหลัก",
         path: "/dashboard",
         status : "all",
         component : Dashboard,
         display: true
     },
     {
-        title : "Edit Profile",
+        title : "แก้ไขโปรไฟล์",
         path : "/editprofile",
         status : "all",
         component : Editprofile,
         display: true
     },
     {
-        title : "Report",
+        title : "รายงาน",
         path : "/report",
         status : "all",
         component : Report,
         display: true
     },
     {
-        title : "Emp",
+        title : "สมาชิก",
         path : "/emp",
         status : "admin",
         component : Emp,
         display: true
     },
     {
-        title : "Work Me",
+        title : "งานของฉัน",
         path : "/workme",
         status : "user",
         component : Workme,
@@ -52,7 +52,7 @@ const router = [
         display: false
     },
     {
-        title : "Logout",
+        title : "ออกจากระบบ",
         path : "/logout",
         status : "all",
         component : Logout,

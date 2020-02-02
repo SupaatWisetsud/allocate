@@ -19,7 +19,7 @@ const Detail = ({ classes, data, close }) => {
                 <p>รายละเอียด : {data.detail}</p>
             </div>
             <div className={classes.div}>
-                <p>เวลาที่กำหนดส่ง : {<Time value={data.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </p>
+                <p>เวลาที่กำหนดส่ง : {data.deadline? <Time value={data.deadline} format="DD/MM/YYYY" /> : "ไม่มีกำหนด"} </p>
             </div>
         </Modal>
     )

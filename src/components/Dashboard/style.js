@@ -23,7 +23,7 @@ const style = theme => ({
     },
     postHeader: {
         display: "flex",
-        justifyContent: "space- between",
+        justifyContent: "space-between",
         padding: 5,
         borderBottom: "2px solid #333"
     },

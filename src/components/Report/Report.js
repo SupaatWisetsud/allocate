@@ -18,6 +18,11 @@ const GQL_Query = gql`
                 firstname
                 lastname
             }
+            worker {
+                firstname
+                lastname
+            }
+            status
         }
         report {
             _id
@@ -51,6 +56,7 @@ const Report = ({ classes, data }) => {
         if (dataReport) {
             setReport(dataReport.report);
             setWork(dataReport.workorder);
+
         }
         setUser(decode(localStorage.getItem("nodeToken"))._doc);
 
@@ -91,14 +97,14 @@ const Report = ({ classes, data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {loading && <p>loading...</p>}
+
                         {report.map((n, i) => (
                             <tr key={n._id} >
                                 <td> {i + 1} </td>
                                 <td>{n.title}</td>
                                 <td>{n.worker.firstname} {n.worker.lastname}</td>
-                                <td> {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </td>
-                                
+                                <td> {n.deadline ? <Time value={n.deadline} format="DD/MM/YYYY" /> : "ไม่มีกำหนด"} </td>
+
                                 <td>
                                     <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn} >เปิด</button>
                                 </td>
@@ -109,6 +115,7 @@ const Report = ({ classes, data }) => {
                         ))}
                     </tbody>
                 </table>
+                {loading && <p>loading...</p>}
             </div>
         </>
     )

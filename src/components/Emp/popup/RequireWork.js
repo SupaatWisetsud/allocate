@@ -35,7 +35,7 @@ export const RequireWork = ({ classes, data, close }) => {
         <Modal isOpen={true} >
             <div className={classes.header} >
                 <p>สั่งงาน</p>
-                <p>ถึงคุณ : {data.firstname} {data.lastname} </p>
+                <span>ถึงคุณ : {data.firstname} {data.lastname} </span>
             </div>
             <div className={classes.divForm}>
                 <form onSubmit={_onSubmit}>

@@ -3,14 +3,13 @@ import { useMutation } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
 const APP_EMP = gql`
-    mutation Add_EMP($username: String!, $password: String!, $firstname: String!, $lastname: String!, $email: String!, $img: Upload, $phone: String!, $status: String!){
+    mutation Add_EMP($username: String!, $password: String!, $firstname: String!, $lastname: String!, $email: String!, $phone: String!, $status: String!){
         register(
             username: $username, 
             password: $password, 
             firstname: $firstname,
             lastname: $lastname,
             email: $email,
-            img: $img,
             phone: $phone,
             status: $status,
         )
@@ -19,7 +18,7 @@ const APP_EMP = gql`
 const AddEmp = ({ classes, toggle }) => {
 
     const [mutaAddemp] = useMutation(APP_EMP)
-    let username, password, fname, lname, email, phone, status, file;
+    let username, password, fname, lname, email, phone, status;
 
     const _onSubmit = e => {
         e.preventDefault();
@@ -31,8 +30,7 @@ const AddEmp = ({ classes, toggle }) => {
                 lastname: lname.value,
                 email: email.value,
                 phone: phone.value,
-                status: status.value,
-                img: file.files[0]
+                status: status.value
             }
         });
         toggle();
@@ -64,9 +62,6 @@ const AddEmp = ({ classes, toggle }) => {
                                 <option value="user" >พนักงาน</option>
                                 <option value="admin">ผู้ดูแล</option>
                             </select>
-                        </div>
-                        <div className={classes.items}>
-                            <input type="file" ref={e => file = e} />
                         </div>
                         <div className={classes.items}>
                             <input type="number" placeholder="Number Phone" ref={e => phone = e} />

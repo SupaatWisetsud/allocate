@@ -25,8 +25,8 @@ const Sidebar = ({ classes }) => {
                 Allocate
             </div>
             <div className={classes.profile} >
-                <img src={"logo192.png"} alt={user._id} />
-                <p>Status : {user.status}</p>
+                <img src={`http://localhost:5000${user.img}`} alt={user._id} style={{objectFit: "cover" }} />
+                <p style={{margin: "10px 0 5px 0"}}>สถานะ : {user.status}</p>
                 <p> {user.firstname} {user.lastname} </p>
             </div>
             <nav>
