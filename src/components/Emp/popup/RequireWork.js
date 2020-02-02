@@ -27,7 +27,7 @@ export const RequireWork = ({ classes, data, close }) => {
                 commander: decode(localStorage.getItem("nodeToken"))._doc._id
             }
         })
-
+        alert("สั่งงานเสร็จสิ้น")
         close();
     }
 

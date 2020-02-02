@@ -3,7 +3,6 @@ import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { Redirect } from 'react-router-dom';
 import style from './style';
-import { Spinner } from '../../../component'
 
 const LOGIN = gql`
     mutation login($username: String!, $password: String!){
@@ -14,7 +13,7 @@ const LOGIN = gql`
     }
 `;
 const Login = ({ classes, history }) => {
-    
+
     const [redirect, setRedirect] = useState(false);
 
     const [mutationLogin, { loading }] = useMutation(LOGIN, {
@@ -50,7 +49,6 @@ const Login = ({ classes, history }) => {
         (localStorage.getItem("nodeToken") !== null) ?
             <Redirect to="/" /> :
             <div className={classes.containerSignIn}>
-                {loading && <Spinner />}
                 {redirect && <Redirect to="/" />}
                 <div className={classes.containerForm}>
                     <form onSubmit={_onLogin}>
@@ -64,7 +62,7 @@ const Login = ({ classes, history }) => {
                             <input type="password" placeholder="password" ref={e => password = e} />
                         </div>
                         <div>
-                            <button>Sign in</button>
+                            <button>{loading ? "Loading.." : "Sign in"}</button>
                         </div>
                     </form>
                 </div>

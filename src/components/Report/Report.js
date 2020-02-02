@@ -28,6 +28,7 @@ const GQL_Query = gql`
             _id
             title
             deadline
+            detail
             path
             worker {
                 firstname

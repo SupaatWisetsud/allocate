@@ -4,6 +4,7 @@ import { Modal } from '../index'
 import Time from 'react-time-format'
 
 const Detail = ({ classes, data, close }) => {
+    
     return (
         <Modal isOpen={true}>
             <div className={classes.close} >

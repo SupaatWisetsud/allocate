@@ -45,17 +45,17 @@ const AddEmp = ({ classes, toggle }) => {
                 <div className={classes.form}>
                     <form onSubmit={_onSubmit} >
                         <div className={classes.items}>
-                            <input type="text" placeholder="Username" ref={e => username = e} />
+                            <input type="text" placeholder="Username" ref={e => username = e} required />
                         </div>
                         <div className={classes.items}>
-                            <input type="password" placeholder="Password" ref={e => password = e} />
+                            <input type="password" placeholder="Password" ref={e => password = e} required />
                         </div>
                         <div className={classes.items2}>
-                            <input type="text" placeholder="First Name" ref={e => fname = e} />
-                            <input type="text" placeholder="Last Name" ref={e => lname = e} />
+                            <input type="text" placeholder="First Name" ref={e => fname = e} required />
+                            <input type="text" placeholder="Last Name" ref={e => lname = e} required />
                         </div>
                         <div className={classes.items}>
-                            <input type="email" placeholder="Email" ref={e => email = e} />
+                            <input type="email" placeholder="Email" ref={e => email = e} required />
                         </div>
                         <div className={classes.items}>
                             <select name="status" ref={e => status = e} >
@@ -64,7 +64,7 @@ const AddEmp = ({ classes, toggle }) => {
                             </select>
                         </div>
                         <div className={classes.items}>
-                            <input type="number" placeholder="Number Phone" ref={e => phone = e} />
+                            <input type="number" placeholder="Number Phone" ref={e => phone = e} required />
                         </div>
                         <div className={classes.items}>
                             <button name="submit" className={classes.btnsubmit}>ตกลง</button>

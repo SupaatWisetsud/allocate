@@ -54,7 +54,7 @@ export const Newwork = ({ classes, close, data, refetch }) => {
                                 <td>{n.title}</td>
                                 <td>{n.commander.firstname} {n.commander.lastname}</td>
                                 <td>
-                                    {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"}
+                                    {n.deadline? <Time value={n.deadline} format="DD/MM/YYYY" /> : "ไม่มีกำหนด"}
                                 </td>
                                 <td>
                                     <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn} >เปิด</button>

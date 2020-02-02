@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost'
 
 const LIST_EMP = gql`
-    {
+    query list_emp {
         users {
             _id
             username
@@ -68,7 +68,7 @@ export default ({ classes, toggle }) => {
                                 <td> {n.email} </td>
                                 <td> {n.phone} </td>
                                 <td>
-                                    <img src={`http://localhost:5000${n.img}`} alt={n.email} width={80} height={80} style={{objectFit: "cover" }} />
+                                    <img src={`http://localhost:5000${n.img}`} alt={n.email} width={80} height={80} style={{ objectFit: "cover" }} />
                                 </td>
                                 <td>
                                     <button onClick={e => {
@@ -77,13 +77,13 @@ export default ({ classes, toggle }) => {
                                     }} className={classes.btn}>สั่งงาน</button>
                                 </td>
                                 <td>
-                                    <button onClick={e => {
-                                        mutationDeleteEmp({
+                                    <button onClick={async e => {
+                                        await mutationDeleteEmp({
                                             variables: {
                                                 id: n._id
-                                            }
-                                        });
-                                        refetch();
+                                            },
+                                            refetchQueries: ["list_emp"]
+                                        }).then(_ => alert("ลบสมาชิกเสร็จสิ้น"))
                                     }} className={classes.btnClose}>ลบ</button>
                                 </td>
                             </tr>
