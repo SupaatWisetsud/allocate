@@ -63,7 +63,7 @@ const style = theme => ({
     sDetail: {
         maxHeight: 90,
         overflow: "auto",
-        '&>p':{
+        '&>p': {
             margin: 10
         }
     },
@@ -78,6 +78,47 @@ const style = theme => ({
         boxShadow: "1px 2px 3px rgba(0,0,0,0.3)",
         margin: "10px 0"
     },
+    btn: {
+        padding: 5,
+        borderRadius: 5,
+        border: "none",
+        fontSize: 18,
+        borderBottom: "3px solid #D35400",
+        cursor: "pointer",
+        backgroundColor: "#EB984E",
+        color: "white"
+    },
+    btnOrder: {
+        margin: "0 0 0 5px",
+        padding: 5,
+        borderRadius: 5,
+        border: "none",
+        fontSize: 18,
+        borderBottom: "3px solid #8E44AD",
+        cursor: "pointer",
+        backgroundColor: "#A569BD",
+        color: "white"
+    },
+    btnClose: {
+        padding: 5,
+        borderRadius: 5,
+        border: "none",
+        fontSize: 18,
+        borderBottom: "3px solid #CB4335",
+        cursor: "pointer",
+        backgroundColor: "#E74C3C",
+        color: "white"
+    },
+    btnsubmit: {
+        padding: 5, 
+        borderRadius: 5, 
+        border: "none", 
+        fontSize: 18, 
+        borderBottom: "3px solid #28B463", 
+        cursor: "pointer",
+        backgroundColor: "#2ECC71",
+        color: "white"
+    }
 })
 
 export default c => jss(style)(c)

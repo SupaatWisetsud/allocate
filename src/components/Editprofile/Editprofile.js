@@ -98,7 +98,7 @@ class Editprofile extends React.Component {
                                     <input type="number" defaultValue={phone} ref={e => this.phone_txt = e} />
                                 </div>
                                 <div className={classes.itemsButton}>
-                                    <button type="submit">อัพเดท</button>
+                                    <button type="submit" className={classes.btnsubmit}>อัพเดท</button>
                                 </div>
                             </form>
                         )}

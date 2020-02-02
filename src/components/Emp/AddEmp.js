@@ -41,7 +41,7 @@ const AddEmp = ({ classes, toggle }) => {
         <React.Fragment>
             <div className={classes.wrapper}>
                 <header className={classes.title}>
-                    <button onClick={toggle} >กลับ</button>
+                    <button onClick={toggle} className={classes.btnOrder} >กลับ</button>
                     <span>เพิ่มพนักงาน</span>
                 </header>
                 <div className={classes.form}>
@@ -72,7 +72,7 @@ const AddEmp = ({ classes, toggle }) => {
                             <input type="number" placeholder="Number Phone" ref={e => phone = e} />
                         </div>
                         <div className={classes.items}>
-                            <button name="submit">ตกลง</button>
+                            <button name="submit" className={classes.btnsubmit}>ตกลง</button>
                         </div>
                     </form>
                 </div>

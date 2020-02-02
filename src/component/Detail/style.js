@@ -22,6 +22,16 @@ const style = theme => ({
         borderRadius: 5,
         boxShadow: "1px 2px 3px rgba(0,0,0,0.3)",
         fontSize: 18,
+    },
+    btnClose: {
+        padding: 5, 
+        borderRadius: 5, 
+        border: "none", 
+        fontSize: 18, 
+        borderBottom: "3px solid #CB4335", 
+        cursor: "pointer",
+        backgroundColor: "#E74C3C",
+        color: "white"
     }
 });
 

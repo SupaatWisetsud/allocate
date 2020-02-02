@@ -25,6 +25,7 @@ const httpLink = createUploadLink({ uri: "http://localhost:5000/graphql" });
 const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
+    
 })
 
 ReactDOM.render(<ApolloProvider client={client}><RootView /></ApolloProvider>, document.getElementById('root'));

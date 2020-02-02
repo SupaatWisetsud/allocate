@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Spinner } from '../../component'
 import { RequireWork } from './popup';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost'
@@ -33,21 +32,20 @@ export default ({ classes, toggle }) => {
     const { data: datausers, loading, refetch } = useQuery(LIST_EMP);
     const [mutationDeleteEmp] = useMutation(DELETE_EMP);
 
-    useEffect(()=>{
+    useEffect(() => {
 
         refetch();
-        if(datausers) setEmp(datausers.users)
+        if (datausers) setEmp(datausers.users)
 
     }, [refetch, datausers])
 
     return (
         <>
-            {loading && <Spinner />}
             <div className={classes.wrapper}>
                 {isOpen && <RequireWork classes={classes} data={data} close={e => setIsOpen(false)} />}
                 <header className={classes.title}>
                     <span>รายชื่อพนักงาน</span>
-                    <button onClick={toggle} >เพิ่มพนักงาน</button>
+                    <button onClick={toggle} className={classes.btnOrder}>เพิ่มพนักงาน</button>
                 </header>
                 <table>
                     <thead>
@@ -62,6 +60,7 @@ export default ({ classes, toggle }) => {
                         </tr>
                     </thead>
                     <tbody>
+                        {loading && <p>Loading...</p>}
                         {emp.map((n, i) => (
                             <tr key={n._id}>
                                 <td>{i + 1}</td>
@@ -75,15 +74,17 @@ export default ({ classes, toggle }) => {
                                     <button onClick={e => {
                                         setData(n)
                                         setIsOpen(true)
-                                    }} >สั่งงาน</button>
+                                    }} className={classes.btn}>สั่งงาน</button>
                                 </td>
                                 <td>
-                                    <button onClick={ e => {
-                                        mutationDeleteEmp({variables: {
-                                            id: n._id
-                                        }});
+                                    <button onClick={e => {
+                                        mutationDeleteEmp({
+                                            variables: {
+                                                id: n._id
+                                            }
+                                        });
                                         refetch();
-                                    }}>ลบ</button>
+                                    }} className={classes.btnClose}>ลบ</button>
                                 </td>
                             </tr>
                         ))}

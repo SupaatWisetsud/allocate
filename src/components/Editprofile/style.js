@@ -42,6 +42,17 @@ const style = theme => ({
     },
     itemsButton: {
         margin: "10px 0"
+    },
+    btnsubmit: {
+        width: "100%", 
+        padding: 5, 
+        borderRadius: 5, 
+        border: "none", 
+        fontSize: 18, 
+        borderBottom: "3px solid #28B463", 
+        cursor: "pointer",
+        backgroundColor: "#2ECC71",
+        color: "white"
     }
 })
 

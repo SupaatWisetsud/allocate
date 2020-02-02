@@ -52,8 +52,8 @@ export const RequireWork = ({ classes, data, close }) => {
                         <input type="date" name="date" ref={e => deadline = e} />
                     </div>
                     <div>
-                        <button type="submit">สั่งงาน</button>
-                        <button onClick={e => { e.preventDefault(); close() }}  >ยกเลิก</button>
+                        <button type="submit" style={{marginRight: 5}} className={classes.btn}>สั่งงาน</button>
+                        <button onClick={e => { e.preventDefault(); close() }} className={classes.btnClose} >ยกเลิก</button>
                     </div>
                 </form>
             </div>

@@ -13,7 +13,7 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                 <React.Fragment>
                     <div className={classes.header}>
                         <p>งานที่สั่ง</p>
-                        <button onClick={close}>ปิด</button>
+                        <button onClick={close} className={classes.btnClose}>ปิด</button>
                     </div>
                     <table>
                         <thead>
@@ -27,15 +27,15 @@ export const RequireWork = ({ classes, isOpen, close, work }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {work.map(n => (
+                            {work.map((n, i) => (
                                 <tr key={n._id}>
-                                    <td>{n._id}</td>
+                                    <td>{i + 1}</td>
                                     <td>{n.title}</td>
                                     <td>{n.commander.firstname} {n.commander.lastname}</td>
                                     <td>{<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"}</td>
                                     <td>รอรับ</td>
                                     <td>
-                                        <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
+                                        <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn}>เปิด</button>
                                     </td>
                                 </tr>
                             ))}

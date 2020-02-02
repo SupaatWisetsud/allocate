@@ -7,7 +7,7 @@ const Detail = ({ classes, data, close }) => {
     return (
         <Modal isOpen={true}>
             <div className={classes.close} >
-                <button onClick={close} >ปิด</button>
+                <button onClick={close} className={classes.btnClose}>ปิด</button>
             </div>
             <header className={classes.header}>
                 <p>รายละเอียดงาน</p>

@@ -34,7 +34,7 @@ export const Newwork = ({ classes, close, data, refetch }) => {
             <Modal isOpen={true} >
                 <header className={classes.header} >
                     <span>งานใหม่</span>
-                    <button onClick={close} >ปิด</button>
+                    <button onClick={close} className={classes.btnClose} >ปิด</button>
                 </header>
                 <table>
                     <thead>
@@ -57,10 +57,10 @@ export const Newwork = ({ classes, close, data, refetch }) => {
                                     {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"}
                                 </td>
                                 <td>
-                                    <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
+                                    <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn} >เปิด</button>
                                 </td>
                                 <td>
-                                    <button onClick={e => workConFrim(n._id)} >รับ</button>
+                                    <button onClick={e => workConFrim(n._id)} className={classes.btnsubmit} >รับ</button>
                                 </td>
                             </tr>
                         ))}

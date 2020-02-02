@@ -84,9 +84,22 @@ export const Submit = ({ classes, close, data, refetch }) => {
                 </div>
             </div>
             <div className={classes.sSubmit} >
-                <button className={null} onClick={_onSubmitWork} >ส่ง</button>
-                <button onClick={close} >ยกเลิก</button>
+                <button className={null} onClick={_onSubmitWork} style={{...styles.btnsubmit, marginRight: 5}}>ส่ง</button>
+                <button onClick={close} className={classes.btnClose}>ยกเลิก</button>
             </div>
         </Modal>
     )
+}
+
+const styles = {
+    btnsubmit: {
+        padding: 5, 
+        borderRadius: 5, 
+        border: "none", 
+        fontSize: 18, 
+        borderBottom: "3px solid #28B463", 
+        cursor: "pointer",
+        backgroundColor: "#2ECC71",
+        color: "white"
+    }
 }

@@ -50,7 +50,7 @@ const Workme = ({ classes }) => {
             <div className={classes.wrapper}>
                 <header className={classes.title}>
                     <span>งานที่กำลังดำเนินการ</span>
-                    <button onClick={e => setNewwork(true)} >งานใหม่</button>
+                    <button onClick={e => setNewwork(true)} className={classes.btnOrder} >งานใหม่</button>
                 </header>
                 <table>
                     <thead>
@@ -79,7 +79,7 @@ const Workme = ({ classes }) => {
                                     <td>{n.commander.firstname} {n.commander.lastname}</td>
                                     <td> {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </td>
                                     <td>
-                                        <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
+                                        <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn}>เปิด</button>
                                     </td>
                                     <td>
                                         {
@@ -87,7 +87,7 @@ const Workme = ({ classes }) => {
                                                 <button onClick={e => {
                                                     setSubmit(true);
                                                     setSelect(n)
-                                                }} >ส่งงาน</button>
+                                                }} className={classes.btnsubmit}>ส่งงาน</button>
                                                 :
                                                 <p style={{ color: "red" }}>หมดกำหนดส่ง</p>
                                         }

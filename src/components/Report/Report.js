@@ -77,7 +77,7 @@ const Report = ({ classes, data }) => {
             <div className={classes.wrapper}>
                 <header className={classes.title}>
                     <span>งานทั้งหมด</span>
-                    {user.status === "admin" && <button onClick={e => setIsOpen(true)}>งานที่สั่ง</button>}
+                    {user.status === "admin" && <button onClick={e => setIsOpen(true)} className={classes.btnOrder}>งานที่สั่ง</button>}
                 </header>
                 <table>
                     <thead>
@@ -100,7 +100,7 @@ const Report = ({ classes, data }) => {
                                 <td> {<Time value={n.deadline} format="DD/MM/YYYY" /> || "ไม่มีกำหนด"} </td>
                                 
                                 <td>
-                                    <button onClick={e => setDetail({ data: n, status: true })} >เปิด</button>
+                                    <button onClick={e => setDetail({ data: n, status: true })} className={classes.btn} >เปิด</button>
                                 </td>
                                 <td>
                                     {n.path.map(p => <p key={p} style={{ border: "1px solid #333", cursor: "pointer" }} onClick={e => downloadFile(p)} >{p}</p>)}
