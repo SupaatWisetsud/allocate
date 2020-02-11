@@ -6,7 +6,7 @@ import Time from 'react-time-format'
 export const RequireWork = ({ classes, isOpen, close, work }) => {
 
     const [detail, setDetail] = useState({ data: {}, status: false });
-
+    
     return (
         <Modal isOpen={isOpen} >
             {!detail.status ?

@@ -14,6 +14,7 @@ const GQL_Query = gql`
             _id
             title
             deadline
+            detail
             commander {
                 firstname
                 lastname

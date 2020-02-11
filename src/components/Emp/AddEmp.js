@@ -31,7 +31,8 @@ const AddEmp = ({ classes, toggle }) => {
                 email: email.value,
                 phone: phone.value,
                 status: status.value
-            }
+            },
+            refetchQueries: ["list_emp"]
         });
         toggle();
     }

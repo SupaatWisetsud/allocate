@@ -76,8 +76,7 @@ export const resolvers = {
         },
         deluser: async (parent, { id }) => {
 
-            await userModel.deleteOne({ _id: id });
-            await workModel.deleteOne({ worker: id });
+            await userModel.deleteOne({ _id: id }).then( async _ => await workModel.deleteOne({ worker: id }));
 
             return true;
         },
