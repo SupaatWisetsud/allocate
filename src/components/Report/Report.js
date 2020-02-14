@@ -66,7 +66,7 @@ const Report = ({ classes, data }) => {
 
     const downloadFile = (filename) => {
         Axios({
-            url: `http://localhost:5000/upload/${filename}`,
+            url: `http://localhost:4000/upload/${filename}`,
             method: 'GET',
             responseType: 'blob', // important
         }).then((response) => {

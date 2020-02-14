@@ -27,5 +27,5 @@ app.use('/img', express.static('./API/img'));
 
 apollo.applyMiddleware({ app });
 
-const server = app.listen(5000, console.log('Server running.. on http://localhost:5000/graphql'));
+const server = app.listen(4000, console.log('Server running.. on http://localhost:4000/graphql'));
 apollo.installSubscriptionHandlers(server); //เปิด WS Protocol สำหรับใช้งาน Subscription
