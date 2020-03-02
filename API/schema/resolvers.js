@@ -9,7 +9,9 @@ export const resolvers = {
     Date: GraphQLDateTime,
     Query: {
         newfeeds: async (parent, args, context, info) => {
-
+            
+            if(!context.user) throw new Error("Please log in")
+            
             const work = await workModel.find({})
                 .nor([{ status: "send" }])
                 .populate("worker")
