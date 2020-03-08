@@ -77,9 +77,10 @@ export const resolvers = {
             return true
         },
         deluser: async (parent, { id }) => {
-
-            await userModel.deleteOne({ _id: id }).then( async _ => await workModel.deleteOne({ worker: id }));
-
+            await workModel.deleteOne({ worker: id }).then( async _ => {
+                await userModel.deleteOne({ _id: id }).then( () => {
+                });
+            });
             return true;
         },
         editprofile: async (_, args) => {
